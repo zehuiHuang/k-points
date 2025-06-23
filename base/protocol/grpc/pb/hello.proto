@@ -1,0 +1,26 @@
+syntax = "proto3"; // 固定语法前缀
+
+
+option go_package = ".";  // 指定生成的Go代码在你项目中的导入路径
+
+
+package pb; // 包名
+
+
+// 定义服务
+service HelloService {
+  // SayHello 方法
+  rpc SayHello (HelloReq) returns (HelloResp) {}
+}
+
+
+// 请求消息
+message HelloReq {
+  string name = 1;
+}
+
+
+// 响应消息
+message HelloResp {
+  string reply = 1;
+}

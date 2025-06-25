@@ -263,8 +263,8 @@ func buildTree2(preorder []int, l1, r1 int, inorder []int, l2, r2 int, preorderM
 /*
 *
 160. 相交链表
-给你两个单链表的头节点 headA 和 headB ，请你找出并返回两个单链表相交的起始节点。如果两个链表不存在相交节点，返回 null 。
-思路：
+描述：给你两个单链表的头节点 headA 和 headB ，请你找出并返回两个单链表相交的起始节点。如果两个链表不存在相交节点，返回 null 。
+思路：使用双指针，并将两个链表连起来，遍历链表时第一个相同的就是相交节点
 */
 func getIntersectionNode(headA, headB *ListNode) *ListNode {
 	// 如果任一链表为空，则不可能有相交节点
@@ -305,14 +305,22 @@ func getIntersectionNode(headA, headB *ListNode) *ListNode {
 示例 1：
 输入：head = [1,2,3,4,5]
 输出：[5,4,3,2,1]
+思路：定义pre、curr指针，pre指向空节点，curr指向头节点，头节点指向pre时，
+遍历时，为了保证Next指针不丢失， 需要先并保存curr的Next指针，然后curr的Next指到pre，最后右移动pre和curr
 */
 func reverseList(head *ListNode) *ListNode {
 	var prev *ListNode
+	//当前节点为头节点
 	curr := head
+	//当前节点不为空则继续循环
 	for curr != nil {
+		//保存当前节点的Next节点
 		next := curr.Next
+		//当前节点的下一个节点赋值为pre
 		curr.Next = prev
+		//将pre指针移动到curr节点
 		prev = curr
+		//将curr指针移动到当前节点的Next节点
 		curr = next
 	}
 	return prev

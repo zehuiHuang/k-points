@@ -115,3 +115,29 @@ func minWindow(s string, t string) string {
 	// 返回最小覆盖子串
 	return s[ansL:ansR]
 }
+
+// 2, 3, 1, 2, 4, 3
+func minSubArrayLen(target int, nums []int) int {
+	//滑动窗口
+	n := len(nums)
+	left, right := 0, 0
+	sum := 0
+	result := n + 1
+	for i := 0; i < n; i++ {
+		sum += nums[i]
+		for sum >= target {
+			subLength := right - left + 1
+			if result > subLength {
+				result = subLength
+			}
+			sum -= nums[i]
+			left++
+		}
+		right++
+	}
+	if result == n+1 {
+		return 0
+	} else {
+		return result
+	}
+}

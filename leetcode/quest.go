@@ -126,28 +126,31 @@ func canJump(nums []int) bool {
 // gas  = [1,2,3,4,5]
 // cost = [3,4,5,1,2]
 /**
-假设从x加油站出发，最后一个加油站为y
-gas[x]+gas[x+1]+...+gas[y] < cost[x]+cost[x+1]+...+cost[y]
+思路：首先遍历环型数组，如果一路总的剩余油量小于0，那么一定不能行驶一周，另外每循环一层时，需要计算从起点到当前节点的总耗油量，
+如果小于零那么从i开始一定不能行驶一周
 */
 func canCompleteCircuit(gas []int, cost []int) int {
-	for i, n := 0, len(gas); i < n; {
-		sumOfGas, sumOfCost, cnt := 0, 0, 0
-		for cnt < n {
-			j := (i + cnt) % n
-			sumOfGas += gas[j]
-			sumOfCost += cost[j]
-			if sumOfCost > sumOfGas {
-				break
-			}
-			cnt++
-		}
-		if cnt == n {
-			return i
-		} else {
-			i += cnt + 1
+	n := len(gas)
+	//起点
+	start := 0
+	//一路总的剩余油量
+	totalCount := 0
+	//从起点开始的当前剩余油量
+	currentCount := 0
+	for i := 0; i < n; i++ {
+		totalCount += gas[i] - cost[i]
+		currentCount += gas[i] - cost[i]
+		//如果当前剩余油量小于0，说明从start到i这段路无法走完，所以从i+1开始重新计算
+		if currentCount < 0 {
+			start = i + 1
+			currentCount = 0
 		}
 	}
-	return -1
+	//如果总的剩余油量小于0，说明无法走完一圈
+	if totalCount < 0 {
+		return -1
+	}
+	return start
 }
 
 /*

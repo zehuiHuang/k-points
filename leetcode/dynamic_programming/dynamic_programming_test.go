@@ -10,3 +10,8 @@ func TestLastStoneWeight(t *testing.T) {
 	result := lastStoneWeight(stones)
 	fmt.Println(result)
 }
+
+func TestMaxSubArray(t *testing.T) {
+	nums := []int{-10, -100}
+	println(maxSubArray(nums))
+}

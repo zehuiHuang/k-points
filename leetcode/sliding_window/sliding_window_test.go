@@ -8,3 +8,8 @@ func TestLengthOfLongestSubstring(t *testing.T) {
 	//print(lengthOfLongestSubstring("abbbdf"))
 	print(lengthOfLongestSubstring("abcb"))
 }
+
+func TestMinSubArrayLen(t *testing.T) {
+	nums := []int{2, 3, 1, 2, 4, 3}
+	minSubArrayLen(7, nums)
+}

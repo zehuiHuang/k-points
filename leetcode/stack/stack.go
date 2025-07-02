@@ -27,3 +27,28 @@ func dailyTemperatures(temperatures []int) []int {
 	}
 	return ans
 }
+
+/*
+84. 柱状图中最大的矩形
+思路：找到数组中左右两边分别第一个小于当前值的元素,比如：[2，1,5,6,2,3]中找到5的左右两边第一个小于他的值分别为1和2
+*/
+func largestRectangleArea(heights []int) int {
+	ret := 0
+	//单调栈
+	stack := []int{}
+	//将数组两边各加上0，保证每个数组元素一定能找到左右两边小于当前值的值
+	heights = append(heights, 0)
+	heights = append([]int{0}, heights...)
+	stack = append(stack, 0)
+	for i := 1; i < len(heights); i++ {
+		for len(stack) > 0 && heights[i] < heights[stack[len(stack)-1]] {
+			top := stack[len(stack)-1]
+			//弹出栈，找到栈中栈顶左边第一个小于栈顶的元素下标
+			stack = stack[:len(stack)-1]
+			left := stack[len(stack)-1]
+			ret = max(ret, (i-left-1)*heights[top])
+		}
+		stack = append(stack, i)
+	}
+	return ret
+}

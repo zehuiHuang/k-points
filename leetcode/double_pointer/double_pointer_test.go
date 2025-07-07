@@ -23,3 +23,9 @@ func TestMoveZeroes(t *testing.T) {
 	nums := []int{0, 1, 0, 3, 12}
 	moveZeroes(nums)
 }
+
+func TestFindAnagrams(t *testing.T) {
+	s := "cbaebabacd"
+	p := "abc"
+	findAnagrams(s, p)
+}

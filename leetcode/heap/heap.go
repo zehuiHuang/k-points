@@ -113,6 +113,61 @@ func maxSlidingWindow(nums []int, k int) []int {
 	//0   1   2   3   4   5   6   7
 }
 
+//leetcode:239
+func maxSlidingWindow2(nums []int, k int) []int {
+	//单调栈（从左到右单调递减）
+	q := []int{}
+	//向单调栈放入元素，如果发现当前元素的值大于单调栈的栈顶元素的值（最小值），则遍历移除掉栈顶元素（我在你右边还比你大，那么在它左边的都可以去掉）
+	push := func(i int) {
+		for len(q) > 0 && nums[i] >= nums[q[len(q)-1]] {
+			q = q[:len(q)-1]
+		}
+		q = append(q, i)
+	}
+
+	for i := 0; i < k; i++ {
+		push(i)
+	}
+
+	n := len(nums)
+	ans := make([]int, 1, n-k+1)
+	ans[0] = nums[q[0]]
+	for i := k; i < n; i++ {
+		push(i)
+		for q[0] <= i-k {
+			q = q[1:]
+		}
+		ans = append(ans, nums[q[0]])
+	}
+	return ans
+}
+
+// 滑动窗口最大值：单调栈
+func maxSlidingWindow3(nums []int, k int) []int {
+	//nums = [1,3,-1,-3,5,3,6,7], k = 3
+	n := len(nums)
+	stack := []int{}
+	ans := make([]int, 1, n-k+1)
+	push := func(i int) {
+		for len(stack) > 0 && nums[i] >= nums[stack[len(stack)-1]] {
+			stack = stack[:len(stack)-1]
+		}
+		stack = append(stack, i)
+	}
+
+	for i := 0; i < k; i++ {
+		push(i)
+	}
+	ans = append(ans, stack[0])
+	for i := k; i < n-1; i++ {
+		push(i)
+		if stack[0] > i-k+1 {
+			stack = stack[1:]
+		}
+		ans = append(ans, stack[0])
+	}
+	return ans
+}
 func smallestK(arr []int, k int) []int {
 	if k == 0 {
 		return nil

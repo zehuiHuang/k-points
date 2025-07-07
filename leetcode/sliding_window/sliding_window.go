@@ -87,7 +87,7 @@ func minWindow(s string, t string) string {
 
 	// 使用滑动窗口遍历s
 	for l, r := 0, 0; r < sLen; r++ {
-		// 如果当前字符在t中出现过，增加其在窗口中的计数
+		// 如果当前字符在t中出现过，增加其在窗口中的计数(只加存在t中的字符)
 		if r < sLen && ori[rune(s[r])] > 0 {
 			cnt[rune(s[r])]++
 		}

@@ -6,7 +6,7 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
-	_ "github.com/go-sql-driver/mysql"
+	//_ "github.com/go-sql-driver/mysql"
 	"io"
 	"io/ioutil"
 	"log"
@@ -294,21 +294,83 @@ func benchmarkSyncMap() {
 }
 
 func main() {
-	//test.EventCount()
-	//test.CustomEventParse()
-	//test.CustomEventPropertyParse()
-	//test.DefaultEventPropertyParse()
+	//deadlineCtx, cancel := context.WithDeadline(context.TODO(), time.Now().Add(time.Second*3))
+	//deadlineCtx, cancel := context.WithTimeout(context.TODO(), time.Second*3)
+	//defer cancel()
+	//select {
+	//case <-deadlineCtx.Done():
+	//	fmt.Println("abc------------", deadlineCtx.Err())
+	//	return
+	//}
+	//time.Sleep(time.Second * 5)
+	//fmt.Println("bbbbbb--------")
+	//信号垃圾
+	defer fmt.Println("1111111")
+	defer fmt.Println("2222222")
 
-	//
-	//dog := Dog{Name: "Buddy"}
-	//var pet Pet = &dog
-	//dog.setName("abc")
-	//pet.Play() // Output: Buddy is playing fetch!
+	var wg sync.WaitGroup
+	ch1 := make(chan struct{}) // 控制 dog1 的打印
+	ch2 := make(chan struct{}) // 控制 dog2 的打印
+	ch3 := make(chan struct{}) // 控制 dog3 的打印
+	wg.Add(3)
 
-	http.HandleFunc("/ping", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("pong"))
-	})
-	http.ListenAndServe(":8091", nil)
+	// dog1 打印协程
+	go func() {
+		defer wg.Done()
+		for i := 0; i < 100; i++ {
+			<-ch1 // 等待触发信号
+			println("dog1")
+			ch2 <- struct{}{} // 触发 dog2
+		}
+	}()
+	// dog2 打印协程
+	go func() {
+		defer wg.Done()
+		for i := 0; i < 100; i++ {
+			<-ch2 // 等待触发信号
+			println("dog2")
+			ch3 <- struct{}{} // 触发 dog3
+		}
+	}()
+
+	// dog3 打印协程
+	go func() {
+		defer wg.Done()
+		for i := 0; i < 100; i++ {
+			<-ch3 // 等待触发信号
+			println("dog3")
+			if i < 99 { // 最后一轮不发送
+				ch1 <- struct{}{} // 触发下一轮 dog1
+			}
+		}
+	}()
+
+	// 启动第一轮打印
+	ch1 <- struct{}{}
+
+	// 等待所有协程完成
+	wg.Wait()
+}
+
+func dog(wg *sync.WaitGroup, ch chan struct{}, count int) {
+	for i := 0; i < count; i++ {
+		ch <- struct{}{}
+		wg.Done()
+	}
+}
+
+func dog2(wg *sync.WaitGroup, ch chan struct{}, count int) {
+	for i := 0; i < count; i++ {
+		ch <- struct{}{}
+		wg.Done()
+	}
+}
+
+func dog3(wg *sync.WaitGroup, ch chan struct{}, count int) {
+	for i := 0; i < count; i++ {
+		ch <- struct{}{}
+		wg.Done()
+	}
 }
 
 type Pet interface {

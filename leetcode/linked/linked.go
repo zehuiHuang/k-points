@@ -1,5 +1,10 @@
 package linked
 
+import (
+	"container/list"
+	"math"
+)
+
 type ListNode struct {
 	Val  int
 	Next *ListNode
@@ -427,4 +432,140 @@ func (this *LRUCache) removeTail() *DLinkedNode {
 	node := this.tail.prev
 	this.removeNode(node)
 	return node
+}
+
+/*
+*
+迭代法前序遍历
+*/
+func preorderTraversal2(root *Node) []int {
+	ans := []int{}
+
+	if root == nil {
+		return ans
+	}
+
+	st := list.New()
+	st.PushBack(root)
+
+	for st.Len() > 0 {
+		node := st.Remove(st.Back()).(*Node)
+
+		ans = append(ans, node.Val)
+		if node.right != nil {
+			st.PushBack(node.right)
+		}
+		if node.left != nil {
+			st.PushBack(node.left)
+		}
+	}
+	return ans
+}
+
+func levelOrder(root *Node) [][]int {
+	st := list.New()
+	st.PushBack(root)
+	ans := [][]int{}
+	for st.Len() > 0 {
+		length := st.Len()
+		arr := []int{}
+		for i := 0; i < length; i++ {
+			node := st.Remove(st.Back()).(*Node)
+			arr = append(arr, node.Val)
+			if node.left != nil {
+				st.PushBack(node.left)
+			}
+			if node.right != nil {
+				st.PushBack(node.right)
+			}
+		}
+		ans = append(ans, arr)
+	}
+	return ans
+}
+
+func levelOrder2(root *Node) [][]int {
+	res := [][]int{}
+	if root == nil { //防止为空
+		return res
+	}
+	queue := list.New()
+	queue.PushBack(root)
+	var tmpArr []int
+	for queue.Len() > 0 {
+		length := queue.Len() //保存当前层的长度，然后处理当前层（十分重要，防止添加下层元素影响判断层中元素的个数）
+		for i := 0; i < length; i++ {
+			node := queue.Remove(queue.Front()).(*Node) //出队列
+			if node.left != nil {
+				queue.PushBack(node.left)
+			}
+			if node.right != nil {
+				queue.PushBack(node.right)
+			}
+			tmpArr = append(tmpArr, node.Val) //将值加入本层切片中
+		}
+		res = append(res, tmpArr) //放入结果集
+		tmpArr = []int{}          //清空层的数据
+	}
+
+	return res
+}
+
+// 226. 翻转二叉树
+// 思路：利用前序遍历
+func invertTree(root *Node) *Node {
+	var p func(root *Node)
+	p = func(root *Node) {
+		if root == nil {
+			return
+		}
+		left := root.left
+		root.left = root.right
+		root.right = left
+		p(root.left)
+		p(root.right)
+	}
+	p(root)
+	return root
+}
+
+// 236. 二叉树的最近公共祖先
+// 思路：使用使用回shu
+func lowestCommonAncestor(root, p, q *Node) *Node {
+	if root == nil {
+		return root
+	}
+	if root == p || root == q {
+		return root
+	}
+	left := lowestCommonAncestor(root.left, p, q)
+	right := lowestCommonAncestor(root.right, p, q)
+	if left != nil && right != nil {
+		return root
+	}
+	if left != nil {
+		return left
+	}
+	if right != nil {
+		return right
+	}
+	return nil
+}
+
+func isBalanced(root *Node) bool {
+	ans := false
+	var p func(root *Node) int
+	p = func(root *Node) int {
+		if root == nil {
+			return 0
+		}
+		left := p(root.left)
+		right := p(root.right)
+		if math.Abs(float64(left-right)) > 1 {
+			ans = true
+		}
+		return max(left, right) + 1
+	}
+	p(root)
+	return ans
 }

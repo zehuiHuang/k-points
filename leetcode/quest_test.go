@@ -52,3 +52,8 @@ func TestSubarraySum2(t *testing.T) {
 	nums := []int{1, 2, 3}
 	subarraySum2(nums, 3)
 }
+
+func TestRestoreIpAddresses(t *testing.T) {
+	s := "25525511135"
+	restoreIpAddresses(s)
+}

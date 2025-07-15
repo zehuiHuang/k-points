@@ -56,3 +56,7 @@ func TestPreOrder(t *testing.T) {
 func TestAbc(t *testing.T) {
 	println(3 / 2)
 }
+
+func TestLevelOrder(t *testing.T) {
+	levelOrder()
+}

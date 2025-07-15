@@ -98,6 +98,28 @@ func maxProfit2(prices []int) int {
 	return sum
 }
 
+// 763. 划分字母区间
+// 思路：贪心
+func partitionLabels(s string) []int {
+	result := []int{}
+	mp := map[rune]int{}
+	//找到每个字母的右边界
+	for i, v := range s {
+		mp[v] = i
+	}
+	segLong := 0
+	maxRight := 0
+	for i, v := range s {
+		segLong++
+		maxRight = max(maxRight, mp[v])
+		if i == maxRight {
+			result = append(result, segLong)
+			segLong = 0
+		}
+	}
+	return result
+}
+
 /*
 *
 leetcode 3123 最短路径中的边

@@ -141,3 +141,26 @@ func minSubArrayLen(target int, nums []int) int {
 		return result
 	}
 }
+
+func longestOnes(nums []int, k int) int {
+	//左指针，下标从0到left-1之间出现的0的数量，下标从0到right下标出现0的数量
+	ans := 0
+	left, lsum, rsum := 0, 0, 0
+	for right, v := range nums {
+		rsum += 1 - v
+		for rsum-lsum > k {
+			lsum += 1 - nums[left]
+			left++
+		}
+		ans = max(ans, right-left+1)
+	}
+	return ans
+}
+
+func max(a, b int) int {
+	if a > b {
+		return a
+	} else {
+		return b
+	}
+}

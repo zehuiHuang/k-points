@@ -120,7 +120,7 @@ func solveNQueens(n int) [][]string {
 			if isValid(n, row, i, qipan) {
 				qipan[row][i] = "Q"
 				dfs(row+1, append(temps, strings.Join(qipan[row], "")))
-				//qipan[row][i] = "."
+				qipan[row][i] = "."
 			}
 		}
 	}
@@ -146,4 +146,44 @@ func isValid(n, row, col int, chessboard [][]string) bool {
 		}
 	}
 	return true
+}
+
+// 216. 组合总和 III
+func combinationSum3(k int, n int) [][]int {
+	ans := [][]int{}
+	var dfs func(startIndex, sum int, temps []int)
+	dfs = func(startIndex, sum int, temps []int) {
+		if len(temps) == k && sum == n {
+			newTemps := make([]int, k)
+			copy(newTemps, temps)
+			ans = append(ans, newTemps)
+			return
+		}
+		for i := startIndex; i <= 9; i++ {
+			dfs(i+1, sum+i, append(temps, i))
+		}
+	}
+	dfs(1, 0, []int{})
+	return ans
+}
+
+// 77. 组合
+func combine(n int, k int) [][]int {
+	//结果
+	ans := [][]int{}
+	var dfs func(startIndex int, path []int)
+	dfs = func(startIndex int, path []int) {
+		if len(path) == k {
+			newTemps := make([]int, len(path))
+			copy(newTemps, path)
+			ans = append(ans, newTemps)
+			return
+		}
+		for i := startIndex; i <= n; i++ {
+			dfs(i+1, append(path, i))
+		}
+
+	}
+	dfs(1, []int{})
+	return ans
 }

@@ -6,6 +6,8 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	"sort"
+
 	//_ "github.com/go-sql-driver/mysql"
 	"io"
 	"io/ioutil"
@@ -148,7 +150,7 @@ func main11() {
 	//
 	//fmt.Println("Extraction complete. Unique access tokens have been written to", outputPath)
 }
-func main2() {
+func main21() {
 	filePath := "D:\\data.txt" // Replace with the actual path to your log file
 	outputPath := "D:\\ip.log" // Replace with the desired path for the output file
 	// Open the input file
@@ -293,7 +295,7 @@ func benchmarkSyncMap() {
 	fmt.Printf("SyncMap: %d ops in %s\n", atomic.LoadUint64(&opsCount), elapsed)
 }
 
-func main() {
+func main2() {
 	//deadlineCtx, cancel := context.WithDeadline(context.TODO(), time.Now().Add(time.Second*3))
 	//deadlineCtx, cancel := context.WithTimeout(context.TODO(), time.Second*3)
 	//defer cancel()
@@ -350,6 +352,62 @@ func main() {
 
 	// 等待所有协程完成
 	wg.Wait()
+}
+
+func main() {
+	//main	a := 0
+	//	b := 0
+	//	for {
+	//		n, _ := fmt.Scan(&a, &b)
+	//		if n == 0 {
+	//			break
+	//		} else {
+	//			fmt.Printf("%d\n", a+b)
+	//		}
+	//	}
+
+	scanner := bufio.NewScanner(os.Stdin)
+
+	// 读取输入句子
+	scanner.Scan()
+	sentence := scanner.Text()
+
+	// 读取前缀
+	scanner.Scan()
+	prefix := scanner.Text()
+
+	// 替换所有非字母字符为空格
+	reg := regexp.MustCompile(`[^a-zA-Z]`)
+	sentence = reg.ReplaceAllString(sentence, " ")
+
+	// 分割单词并去重
+	wordSet := make(map[string]bool)
+	words := strings.Fields(sentence)
+	for _, word := range words {
+		wordSet[word] = true
+	}
+
+	// 获取去重后的单词并排序
+	uniqueWords := make([]string, 0, len(wordSet))
+	for word := range wordSet {
+		uniqueWords = append(uniqueWords, word)
+	}
+	sort.Strings(uniqueWords)
+
+	// 收集匹配前缀的单词
+	var result []string
+	for _, word := range uniqueWords {
+		if strings.HasPrefix(word, prefix) {
+			result = append(result, word)
+		}
+	}
+
+	// 输出结果
+	if len(result) > 0 {
+		fmt.Println(strings.Join(result, " "))
+	} else {
+		fmt.Println(prefix)
+	}
 }
 
 func dog(wg *sync.WaitGroup, ch chan struct{}, count int) {

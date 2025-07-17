@@ -1,6 +1,9 @@
 package sliding_window
 
-import "testing"
+import (
+	"fmt"
+	"testing"
+)
 
 func TestLengthOfLongestSubstring(t *testing.T) {
 	//print(lengthOfLongestSubstring("abcabcbb"))
@@ -12,4 +15,9 @@ func TestLengthOfLongestSubstring(t *testing.T) {
 func TestMinSubArrayLen(t *testing.T) {
 	nums := []int{2, 3, 1, 2, 4, 3}
 	minSubArrayLen(7, nums)
+}
+
+func TestLongestOnes(t *testing.T) {
+	p := []int{1, 0, 1, 0, 1}
+	fmt.Println(longestOnes(p, 1))
 }

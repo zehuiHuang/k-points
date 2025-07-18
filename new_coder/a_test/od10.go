@@ -10,7 +10,7 @@ import (
 )
 
 // 主管期望你来实现英文输入法单词联想功能。
-func main() {
+func main10() {
 	//The furthest distance in the world, Is not between life and death, But when I stand in front of you, Yet you don’t know that I love you.
 	//f
 	//front furthest

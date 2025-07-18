@@ -530,7 +530,7 @@ func invertTree(root *Node) *Node {
 }
 
 // 236. 二叉树的最近公共祖先
-// 思路：使用使用回shu
+// 思路：使用回溯
 func lowestCommonAncestor(root, p, q *Node) *Node {
 	if root == nil {
 		return root

@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-func main() {
+func main3() {
 	scanner := bufio.NewScanner(os.Stdin)
 	scanner.Scan()
 	//数组数量

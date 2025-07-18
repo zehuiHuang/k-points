@@ -295,7 +295,7 @@ func benchmarkSyncMap() {
 	fmt.Printf("SyncMap: %d ops in %s\n", atomic.LoadUint64(&opsCount), elapsed)
 }
 
-func main2() {
+func main() {
 	//deadlineCtx, cancel := context.WithDeadline(context.TODO(), time.Now().Add(time.Second*3))
 	//deadlineCtx, cancel := context.WithTimeout(context.TODO(), time.Second*3)
 	//defer cancel()
@@ -354,7 +354,7 @@ func main2() {
 	wg.Wait()
 }
 
-func main() {
+func main1111() {
 	//main	a := 0
 	//	b := 0
 	//	for {

@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"math/rand"
 	"sort"
-	"strconv"
 )
 
 // 100, 4, 200, 1, 3, 2

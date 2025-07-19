@@ -7,7 +7,7 @@ import (
 	"strconv"
 )
 
-func main() {
+func main5() {
 	scanner := bufio.NewScanner(os.Stdin)
 	scanner.Scan()
 	n, _ := strconv.Atoi(scanner.Text())

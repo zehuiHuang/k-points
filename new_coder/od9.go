@@ -36,7 +36,7 @@ import (
 11 33 44 55
 22
 */
-func main() {
+func main9() {
 	scanner := bufio.NewScanner(os.Stdin)
 	scanner.Scan()
 	producer := strings.Fields(scanner.Text())

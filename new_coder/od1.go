@@ -6,10 +6,6 @@ import (
 	"strings"
 )
 
-/**
-(B卷,100分)- 判断一组不等式是否满足约束并输出最大差（Java & JS & Python）
-*/
-
 func main1() {
 	//scanner := bufio.NewScanner(os.Stdin)
 	//scanner.Scan()

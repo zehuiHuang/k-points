@@ -34,7 +34,7 @@ import (
 3 7 2
 */
 //思路，找到最小子节点，然后倒推到根节点
-func main() {
+func main16() {
 	scanner := bufio.NewScanner(os.Stdin)
 	scanner.Scan()
 	input := strings.Fields(scanner.Text())

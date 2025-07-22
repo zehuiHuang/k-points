@@ -24,7 +24,7 @@ import (
 输出：
 [3, 4, 5, 6]
 */
-func main() {
+func main27() {
 	scanner := bufio.NewScanner(os.Stdin)
 	scanner.Scan()
 	input := strings.Split(scanner.Text(), ",")

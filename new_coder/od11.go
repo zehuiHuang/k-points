@@ -7,6 +7,7 @@ import (
 	"strconv"
 )
 
+//货币单位换算
 /*
 *
 题目描述
@@ -47,6 +48,10 @@ CNY	JPY	HKD	EUR	GBP
 6432
 */
 func main11() {
+	//思路：1、定义方法：通过货币单位获取人民币分的汇率
+	//2、逐行解析字符串s：如果是数子：c>='0'&&c<='9' 则current=current*10+int(c-'0')，-》得出金额count
+	//3、如果不是数字，则从字符串解析出来(以字符串结尾或者后面又出现数字为截止)，->得出汇率 rate
+	//4、换算，将count*rate，然后加到总和结果中
 	var exChange func(unit string) float64
 	exChange = func(unit string) float64 {
 		switch unit {
@@ -98,7 +103,7 @@ func main11() {
 				//20CNY53fen
 				//53HKD87cents
 				currentUnit = currentUnit + string(c)
-				//检查是否到了结尾，或者是否是数组
+				//检查是否到了结尾，或者是否是数字
 				if i+1 == len(s) || (s[i+1] >= '0' && s[i+1] <= '9') {
 					rate := exChange(currentUnit)
 					f := float64(currentFen) * rate

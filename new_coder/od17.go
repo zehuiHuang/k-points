@@ -29,13 +29,11 @@ import (
 21305
 */
 func main17() {
+	//思路：给数组进行排序，并选择前三个值
+	//对前三个值在进行排序：arr[i]+arr[j]<arr[j]+arr[i],即按照两数相加的升序排序
 	scanner := bufio.NewScanner(os.Stdin)
 	scanner.Scan()
 	arr := strings.Split(scanner.Text(), ",")
-	//arr := make([]int, len(input))
-	//for i := range input {
-	//	arr[i], _ = strconv.Atoi(input[i])
-	//}
 
 	sort.Slice(arr, func(i, j int) bool {
 		a, _ := strconv.Atoi(arr[i])

@@ -32,6 +32,7 @@ var arr []int  // 每块披萨的美味值
 var dp [][]int // 记忆化数组，用于存储已计算过的状态
 
 func main5() {
+	//思路：定义馋嘴从披萨的两端（L,R）选择批量时,吃货能吃到的最到批量的量为：dp[L][R]
 	scanner := bufio.NewScanner(os.Stdin)
 	scanner.Scan()
 	total, _ := strconv.Atoi(scanner.Text())
@@ -68,6 +69,7 @@ func main5() {
 	fmt.Println(ans) // 输出最多能吃到的披萨的美味值总和
 }
 
+// 表示馋嘴从L到R按照贪心选择时，吃货能吃到的最多披萨的总理最多为dp[L][R]
 func allocation(L, R int) int {
 	// 如果当前状态已经计算过，则直接返回结果
 	if dp[L][R] != -1 {
@@ -83,7 +85,7 @@ func allocation(L, R int) int {
 
 	// 处理剩余披萨
 	if L == R {
-		dp[L][R] = arr[L] // 只剩一块披萨，直接返回值
+		dp[L][R] = arr[L] // 只剩一块披萨，直接返回值(因为是奇数个，且是吃货先选的，所有最后一个肯定是吃货选)
 	} else {
 		// 计算选择左端或右端披萨的最优解
 		option1 := arr[L] + allocation((L+1)%n, R)   // 选择左端披萨

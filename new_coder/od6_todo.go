@@ -25,24 +25,34 @@ import (
 输出描述
 输出为这样的区域有多少个
 */
+
+/*
+*输入：
+2 5 2 6
+1 3 4 5 8
+2 3 6 7 1
+
+输出：
+4
+*/
 func main6() {
 	//凑成二位数组
 	scanner := bufio.NewScanner(os.Stdin)
 	scanner.Scan()
 	arrP := strings.Fields(scanner.Text())
 
-	r, _ := strconv.Atoi(arrP[0])
-	c, _ := strconv.Atoi(arrP[1])
+	m, _ := strconv.Atoi(arrP[0])
+	n, _ := strconv.Atoi(arrP[1])
 	//s, _ := strconv.Atoi(arrP[2])
 	//m, _ := strconv.Atoi(arrP[3])
 
-	matrix := make([][]int, r)
+	matrix := make([][]int, m)
 
-	for i := 0; i < r; i++ {
+	for i := 0; i < m; i++ {
 		scanner.Scan()
 		arr := strings.Fields(scanner.Text())
-		matrix[i] = make([]int, c)
-		for j := 0; j < c; j++ {
+		matrix[i] = make([]int, n)
+		for j := 0; j < n; j++ {
 			v, _ := strconv.Atoi(arr[j])
 			matrix[i][j] = v
 		}

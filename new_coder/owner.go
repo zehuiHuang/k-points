@@ -1,11 +1,13 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
-func main221111() {
-	aa := []int{1, 2, 3}
-	for i := range aa {
-		fmt.Println(i)
-	}
+func main11121() {
+	s := "12312"
+	fmt.Println(s[0])
+	fmt.Println('0')
+	fmt.Println(int((s[0] - '0')))
 
 }

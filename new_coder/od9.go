@@ -37,12 +37,14 @@ import (
 22
 */
 func main9() {
+	//思路：1、将生产者和消费者组装成二位数组(生产者)，同时对生产者按照消息发送时间进行升序排序
+	//2、按照顺序遍历生产者，拿到生产者的发送时间和内容后，开始对消费者倒叙遍历，若生产者发送时间在消费者时间范围内，则将消息发送的内容存储起来
 	scanner := bufio.NewScanner(os.Stdin)
 	scanner.Scan()
 	producer := strings.Fields(scanner.Text())
 	scanner.Scan()
 	consumer := strings.Fields(scanner.Text())
-
+	//生产者队列
 	pArr := make([][]int, len(producer)/2)
 	pIdx := 0
 	i := 0
@@ -54,6 +56,7 @@ func main9() {
 		i += 2
 	}
 
+	//消费者队列
 	cArr := make([][]int, len(consumer)/2)
 
 	cIdx := 0
@@ -69,15 +72,18 @@ func main9() {
 	sort.Slice(pArr, func(i, j int) bool {
 		return pArr[i][0] < pArr[j][0]
 	})
-	//消费者消费的消息
+	//定义消费者消费的消息
 	consumerArr := make([][]int, len(cArr))
 	for i := 0; i < len(consumerArr); i++ {
 		consumerArr[i] = make([]int, 0)
 	}
 
 	for i := 0; i < len(pArr); i++ {
+		//时间
 		time := pArr[i][0]
+		//消息内容
 		content := pArr[i][1]
+		//优先级最高的消费者(包含消费开始时间和截止时间)的下标索引
 		end := len(cArr) - 1
 
 		for end >= 0 {

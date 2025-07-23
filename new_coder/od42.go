@@ -37,8 +37,8 @@ import (
 10
 */
 
-func main() {
-	//思路：先计算全部选择左边的，右边的不选
+func main42() {
+	//思路：先计算全部选择左边的，右边的不选,然后逐步缩小左边的值A，同时增加右边的值B，那么max(sum+=B-A)
 	scanner := bufio.NewScanner(os.Stdin)
 	scanner.Scan()
 	strconv.Atoi(scanner.Text())

@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"fmt"
 	"os"
 	"strconv"
 	"strings"
@@ -36,18 +37,21 @@ import (
 4
 */
 func main6() {
+	//思路：在整个区域的范围内（在m*n的范围内s*s的移动）分别进行向右向下移动，每移动一层，便计算s*s 在整个范围内所占的面积
 	//凑成二位数组
 	scanner := bufio.NewScanner(os.Stdin)
 	scanner.Scan()
 	arrP := strings.Fields(scanner.Text())
-
-	m, _ := strconv.Atoi(arrP[0])
-	n, _ := strconv.Atoi(arrP[1])
-	//s, _ := strconv.Atoi(arrP[2])
-	//m, _ := strconv.Atoi(arrP[3])
+	//分别为地区的长、宽、电站边长、最低发电量
+	m, _ := strconv.Atoi(arrP[0])   //2
+	n, _ := strconv.Atoi(arrP[1])   //5
+	s, _ := strconv.Atoi(arrP[2])   //2
+	min, _ := strconv.Atoi(arrP[3]) //6
 
 	matrix := make([][]int, m)
-
+	//2 5 2 6
+	//1 3 4 5 8
+	//2 3 6 7 1
 	for i := 0; i < m; i++ {
 		scanner.Scan()
 		arr := strings.Fields(scanner.Text())
@@ -57,5 +61,22 @@ func main6() {
 			matrix[i][j] = v
 		}
 	}
+
+	ans := 0
+	for i := s; i <= m; i++ {
+		for j := s; j <= n; j++ {
+			//在整个区域的范围内（在m*n的范围内s*s的移动）分别进行向右向下移动，
+			square := 0
+			for x := i - s; x < m; x++ {
+				for y := j - s; y < n; y++ {
+					square += matrix[x][y]
+				}
+			}
+			if square >= min {
+				ans++
+			}
+		}
+	}
+	fmt.Println(ans)
 
 }

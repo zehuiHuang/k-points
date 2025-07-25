@@ -25,6 +25,7 @@ import (
 [3, 4, 5, 6]
 */
 func main27() {
+	//思路：排列组合问题，将taskA*i+taskB*(count-i) 每一种情况都计算一遍，count为从0～num
 	scanner := bufio.NewScanner(os.Stdin)
 	scanner.Scan()
 	input := strings.Split(scanner.Text(), ",")

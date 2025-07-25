@@ -28,6 +28,10 @@ asdbuiodevauufgh
 3
 */
 func main23() {
+	//思路：滑动窗口
+	//1、根据原字符串计算出元音字符的下标并组装成元音字符串（值为原字符串下标），滑动窗口双指针在元音字符串滑动
+	//2、当双指针之间的瑕疵度小于n，则r++，若大于n，则l++，若等于n，则记录下来和之前历史的对比后选最大的
+	//3、循环条件r<len(原音字符串)
 	scanner := bufio.NewScanner(os.Stdin)
 	scanner.Scan()
 	n, _ := strconv.Atoi(scanner.Text())
@@ -40,7 +44,7 @@ func main23() {
 	}
 
 	idx := []int{}
-	//统计元音自负在字符串的下标并得出一个切片，在该切片上进行滑动
+	//统计元音字符在字符串的下标并得出一个切片，在该切片上进行滑动
 	for i := 0; i < len(s); i++ {
 		if mp[rune(s[i])] {
 			idx = append(idx, i)

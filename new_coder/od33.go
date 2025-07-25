@@ -37,20 +37,21 @@ aab 2
 2
 */
 
-// 思路：使用回溯方法，类似leetcode的回复IP地址
+// 思路：使用回溯方法
 func main33() {
+	//思路：使用回溯算饭，遍历s中的每个字符串，由于是排序问题，所有没用index，而是每次循环都是从0～len(nums)中选择
 	scanner := bufio.NewScanner(os.Stdin)
 	scanner.Scan()
 	input := strings.Fields(scanner.Text())
 	s := input[0]
 	k, _ := strconv.Atoi(input[1])
 
-	//存储每个字符串的数量
+	//存储每个字符串的数量（也有去重的作用）
 	mp := make(map[string]int)
 	used := make([]bool, len(s))
 
 	var dfs func(s, current string, mp map[string]int, c []bool)
-	//s:指定的字符串；mp：存储符合条件的字符串；used:每次从指定字符串取值是判定是否已经被取过
+	//s:指定的字符串；mp：存储符合条件的字符串；used:每次从指定字符串取值时判定是否已经被取过
 	dfs = func(s, current string, mp map[string]int, used []bool) {
 		if len(current) == k {
 			mp[current] = 1

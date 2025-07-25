@@ -33,6 +33,7 @@ A、B已经按照从小到大排好序，A、B均不为空，给定一个距离R
 5 8
 */
 func main28() {
+	//思路：从setB集合中找到与setA结合的每一个元素，保证setB[i]>setA[j],且setB[i]-setA[j]<=r
 	scanner := bufio.NewScanner(os.Stdin)
 	scanner.Scan()
 	input := strings.Fields(scanner.Text())

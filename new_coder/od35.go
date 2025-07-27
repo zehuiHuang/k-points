@@ -102,7 +102,7 @@ func main35() {
 					newX := i + offsets[k][0]
 					newY := j + offsets[k][1]
 					if newX >= 0 && newX < m && newY >= 0 && newY < n && tables[newX][newY] != 1 {
-						union(unions, pos, newX*m+newY)
+						union(unions, pos, newX*n+newY)
 					}
 				}
 			}

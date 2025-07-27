@@ -66,7 +66,9 @@ func main42() {
 		fmt.Println(n)
 		return
 	}
+	//左边下标，选择减去左边的最后一位
 	l := n - 1
+	//右边下标，选择加上一位
 	r := len(tables) - 1
 
 	for l >= 0 {

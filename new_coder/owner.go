@@ -2,7 +2,7 @@ package main
 
 import "fmt"
 
-func main13123123() {
+func mainsdfds() {
 
 	//s := "hello"
 	//for i := 0; i < len(s); i++ {
@@ -16,12 +16,13 @@ func main13123123() {
 	//	//fmt.Printf("%x ", rune(r)) // 输出每个rune的十六进制表示
 	//}
 
-	a := "abcdd"
+	//a := "abcdd"
 	//for i := range a {
 	//	fmt.Println(string(a[i]))
 	//}
 
-	for i := 0; i < len(a); i++ {
-		fmt.Println(a[i])
-	}
+	ints := []int{1, 2}
+	ints = append(ints, 3, 4, 5)
+	fmt.Println(ints)
+
 }

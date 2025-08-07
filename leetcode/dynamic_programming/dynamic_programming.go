@@ -2,54 +2,19 @@ package dynamic_programming
 
 import "math"
 
-/**
-leetcode:53. 最大子数组和
-给你一个整数数组 nums ，请你找出一个具有最大和的连续子数组（子数组最少包含一个元素），返回其最大和。
-
-子数组是数组中的一个连续部分。
-
-示例 1：
-
-输入：nums = [-2,1,-3,4,-1,2,1,-5,4]
-输出：6
-解释：连续子数组 [4,-1,2,1] 的和最大，为 6 。
-
-
-解题思路：经典动态规划，
-假设结果是以i为结尾的字窜最大和为dp(i)，推导公式： dp[i]=max(dp[i - 1] + nums[i], nums[i])
-1、那么首先从第2位开始，如果前面（即第1位）的值大于0，则将第一和第二位的值相加并赋值给第二位
-2、从第三位开始，计算前面的（即第二位，注意：第2位的值目前是前面的累计值）是否大于0，如果大于0，则将第二位和第三位的值相加并赋值给第三位
-3、以此类推，保证nums[i]的值是前面所有可能组合的最大累计值
-*/
-
-func maxSubArray(nums []int) int {
-	max := nums[0]
-	for i := 1; i < len(nums); i++ {
-		if nums[i-1] > 0 {
-			nums[i] += nums[i-1]
-		}
-		if nums[i] > max {
-			max = nums[i]
-		}
+// 509. 斐波那契数
+// 思路：滚动数组
+func fib(n int) int {
+	if n < 2 {
+		return n
 	}
-	return max
-}
-
-// 贪心算法
-func maxSubArray2(nums []int) int {
-	//以i为结尾的最大子数组合集为你dp[i]
-	//dp[i]=max(dp[i - 1] + nums[i], nums[i])
-	n := len(nums)
-	dp := make([]int, n)
-	dp[0] = nums[0]
-	result := nums[0]
+	a, b, c := 0, 1, 0
 	for i := 1; i < n; i++ {
-		// 这里的状态转移方程就是：求最大和
-		// 会面临2种情况，一个是带前面的和，一个是不带前面的和
-		dp[i] = max(dp[i-1]+nums[i], nums[i])
-		result = max(result, dp[i])
+		c = a + b
+		a = b
+		b = c
 	}
-	return result
+	return c
 }
 
 /*
@@ -57,7 +22,6 @@ func maxSubArray2(nums []int) int {
 70. 爬楼梯：leetcode 70
 假设你正在爬楼梯。需要 n 阶你才能到达楼顶。
 每次你可以爬 1 或 2 个台阶。你有多少种不同的方法可以爬到楼顶呢？
-
 思路：方程式：dp(i)表示爬到第i层楼底，有d[i]个方法
 理解：
 1、假设知道了到达i-1阶为dp(i-1)中方法，那么对于dp(i-1)种方法中的每一种，我们都可以通过再跨1步到达第i阶，
@@ -81,23 +45,18 @@ func climbStairs(n int) int {
 	}
 	return r
 }
-
-/*
-斐波那契数：leetcode 509
-//思路：滚动数组
-*/
-func fib(n int) int {
-	if n < 2 {
-		return n
+func climbStairs2(n int) int {
+	if n == 1 {
+		return 1
 	}
-
-	a, b, c := 0, 0, 1
-	for i := 2; i <= n; i++ {
-		a = b
-		b = c
-		c = a + b
+	dp := make([]int, n+1)
+	dp[0] = 0
+	dp[1] = 1
+	dp[2] = 2
+	for i := 3; i <= n; i++ {
+		dp[i] = dp[i-1] + dp[i-2]
 	}
-	return c
+	return dp[n]
 }
 
 /*
@@ -118,6 +77,78 @@ func minCostClimbingStairs(cost []int) int {
 		pre, cur = cur, min(pre+cost[i-2], cur+cost[i-1])
 	}
 	return cur
+}
+
+// 62. 不同路径
+func uniquePaths(m int, n int) int {
+	//dp[i][j]:从0,0走到i,j一共的走法:dp[i][j]=dp[i-1][j]+dp[i][j-1]
+	dp := make([][]int, m)
+	for i := range dp {
+		dp[i] = make([]int, n)
+		dp[i][0] = 1
+	}
+	for i := 0; i < n; i++ {
+		dp[0][i] = 1
+	}
+
+	for i := 1; i < m; i++ {
+		for j := 1; j < n; j++ {
+			dp[i][j] = dp[i-1][j] + dp[i][j-1]
+		}
+	}
+	return dp[m-1][n-1]
+}
+
+// 63. 不同路径 II
+func uniquePathsWithObstacles(obstacleGrid [][]int) int {
+	m := len(obstacleGrid)
+	n := len(obstacleGrid[0])
+	dp := make([][]int, m)
+	for i := range dp {
+		dp[i] = make([]int, n)
+		if obstacleGrid[i][0] == 1 {
+			break
+		}
+		dp[i][0] = 1
+	}
+	for i := 0; i < n; i++ {
+		if obstacleGrid[0][i] == 1 {
+			break
+		}
+		dp[0][i] = 1
+	}
+
+	for i := 1; i < m; i++ {
+		for j := 1; j < n; j++ {
+			if obstacleGrid[i][j] == 0 {
+				dp[i][j] = dp[i-1][j] + dp[i][j-1]
+			}
+		}
+	}
+	return dp[m-1][n-1]
+}
+
+// 416. 分割等和子集
+// 思路:01背包问题
+func canPartition(nums []int) bool {
+	sum := 0
+	for i := range nums {
+		sum += nums[i]
+	}
+	if sum%2 == 1 {
+		return false
+	}
+	target := sum / 2
+	//背包问题
+	//dp[j]=max(dp[j],dp[j-weight[i]]+value[i])
+	dp := make([]int, target+1)
+	dp[0] = 0
+	for i := 0; i < len(nums); i++ {
+		for j := target; j >= nums[i]; j-- {
+			dp[j] = max(dp[j], dp[j-nums[i]]+nums[i])
+		}
+	}
+	return dp[target] == target
 }
 
 /*
@@ -342,4 +373,54 @@ func lengthOfLIS(nums []int) int {
 		}
 	}
 	return ans
+}
+
+/**
+leetcode:53. 最大子数组和
+给你一个整数数组 nums ，请你找出一个具有最大和的连续子数组（子数组最少包含一个元素），返回其最大和。
+
+子数组是数组中的一个连续部分。
+
+示例 1：
+
+输入：nums = [-2,1,-3,4,-1,2,1,-5,4]
+输出：6
+解释：连续子数组 [4,-1,2,1] 的和最大，为 6 。
+
+
+解题思路：经典动态规划，
+假设结果是以i为结尾的字窜最大和为dp(i)，推导公式： dp[i]=max(dp[i - 1] + nums[i], nums[i])
+1、那么首先从第2位开始，如果前面（即第1位）的值大于0，则将第一和第二位的值相加并赋值给第二位
+2、从第三位开始，计算前面的（即第二位，注意：第2位的值目前是前面的累计值）是否大于0，如果大于0，则将第二位和第三位的值相加并赋值给第三位
+3、以此类推，保证nums[i]的值是前面所有可能组合的最大累计值
+*/
+
+func maxSubArray(nums []int) int {
+	max := nums[0]
+	for i := 1; i < len(nums); i++ {
+		if nums[i-1] > 0 {
+			nums[i] += nums[i-1]
+		}
+		if nums[i] > max {
+			max = nums[i]
+		}
+	}
+	return max
+}
+
+// 贪心算法
+func maxSubArray2(nums []int) int {
+	//以i为结尾的最大子数组合集为你dp[i]
+	//dp[i]=max(dp[i - 1] + nums[i], nums[i])
+	n := len(nums)
+	dp := make([]int, n)
+	dp[0] = nums[0]
+	result := nums[0]
+	for i := 1; i < n; i++ {
+		// 这里的状态转移方程就是：求最大和
+		// 会面临2种情况，一个是带前面的和，一个是不带前面的和
+		dp[i] = max(dp[i-1]+nums[i], nums[i])
+		result = max(result, dp[i])
+	}
+	return result
 }

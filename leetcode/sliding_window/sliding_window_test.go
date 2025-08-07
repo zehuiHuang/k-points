@@ -21,3 +21,8 @@ func TestLongestOnes(t *testing.T) {
 	p := []int{1, 0, 1, 0, 1}
 	fmt.Println(longestOnes(p, 1))
 }
+
+func TestName(t *testing.T) {
+	nums := []int{1, 3, 4, 2, 2}
+	findDuplicate(nums)
+}

@@ -7,19 +7,6 @@ import "math"
 
 */
 
-/**
-Set<Character> occ = new HashSet<Character>();
-        int left = 0, ans = 0;
-        for(int i = 0; i < s.length(); i++){
-            while(occ.contains(s.charAt(i))){
-                occ.remove(s.charAt(left++));
-            }
-            occ.add(s.charAt(i));
-            ans = Math.max(ans, i - left + 1);
-        }
-        return ans;
-*/
-
 /*
 *leetcode 3.无重复字符的最长子串
 案例：
@@ -30,18 +17,18 @@ func lengthOfLongestSubstring(s string) int {
 	occ := make(map[rune]bool)
 	left, ans := 0, 0
 	//遍历字符串
-	for i := 0; i < len(s); i++ {
+	for right := 0; right < len(s); right++ {
 		//判断当前字符串是否在occ中
-		for occ[rune(s[i])] {
+		for occ[rune(s[right])] {
 			//循环删除的目的是为了将left的位置移动到第一次出现重复字符的下一个位置，例如abcb，left需要移动到下标为1的b字节的下一个位置（即c）
 			//若在，则删除该字符，并且左边界向右滑动一个位置
 			delete(occ, rune(s[left]))
 			left++
 		}
 		//给当前字符添加到occ中
-		occ[rune(s[i])] = true
+		occ[rune(s[right])] = true
 		//计算当前窗口的长度
-		length := i - left + 1
+		length := right - left + 1
 		if length > ans {
 			ans = length
 		}
@@ -78,7 +65,7 @@ func minWindow(s string, t string) string {
 	// check函数：检查当前窗口是否包含t的所有字符
 	check := func() bool {
 		for k, v := range ori {
-			if cnt[rune(k)] < v { // 如果当前窗口中某个字符的数量小于需要的数量
+			if cnt[k] < v { // 如果当前窗口中某个字符的数量小于需要的数量
 				return false
 			}
 		}
@@ -116,24 +103,24 @@ func minWindow(s string, t string) string {
 	return s[ansL:ansR]
 }
 
+// 209:长度最小的子数组
 // 2, 3, 1, 2, 4, 3
 func minSubArrayLen(target int, nums []int) int {
 	//滑动窗口
 	n := len(nums)
-	left, right := 0, 0
+	left := 0
 	sum := 0
 	result := n + 1
-	for i := 0; i < n; i++ {
-		sum += nums[i]
+	for right := 0; right < n; right++ {
+		sum += nums[right]
 		for sum >= target {
 			subLength := right - left + 1
 			if result > subLength {
 				result = subLength
 			}
-			sum -= nums[i]
+			sum -= nums[right]
 			left++
 		}
-		right++
 	}
 	if result == n+1 {
 		return 0
@@ -142,11 +129,21 @@ func minSubArrayLen(target int, nums []int) int {
 	}
 }
 
+// 1004. 最大连续1的个数 III
+/**
+给定一个二进制数组 nums 和一个整数 k，假设最多可以翻转 k 个 0 ，则返回执行操作后 数组中连续 1 的最大个数 。
+示例 1：
+输入：nums = [1,1,1,0,0,0,1,1,1,1,0], K = 2
+输出：6
+解释：[1,1,1,0,0,1,1,1,1,1,1]
+粗体数字从 0 翻转到 1，最长的子数组长度为 6
+*/
 func longestOnes(nums []int, k int) int {
 	//左指针，下标从0到left-1之间出现的0的数量，下标从0到right下标出现0的数量
 	ans := 0
 	left, lsum, rsum := 0, 0, 0
 	for right, v := range nums {
+		//统计另的个数
 		rsum += 1 - v
 		for rsum-lsum > k {
 			lsum += 1 - nums[left]
@@ -163,4 +160,28 @@ func max(a, b int) int {
 	} else {
 		return b
 	}
+}
+
+// 287. 寻找重复数
+func findDuplicate(nums []int) int {
+	//快慢指针
+	slow, fast := 0, 0
+	//先模拟环形节点,找到相遇的点
+	for {
+		slow = nums[slow]
+		fast = nums[nums[fast]]
+		if slow == fast {
+			break
+		}
+	}
+	//将慢指针移动到头部,快慢指针同时移动一步,相遇的点即为公共节点
+	slow = 0
+	for {
+		slow = nums[slow]
+		fast = nums[fast]
+		if slow == fast {
+			break
+		}
+	}
+	return slow
 }

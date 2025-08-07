@@ -9,9 +9,9 @@
    value   -> 所有blob的摘要信息,即文件夹下所有文件或文件夹的摘要信息
    key     -> 基于value通过SHA-1生成的摘要
 
-3、commit    -> 提交记录
+3、c****ommit    -> 提交记录
    value     -> 父commit的key(merge时会存在多个)、author、committer、仓库文件夹tree对应的key、提交时携带的摘要信息
-   key       -> 基于 value 通过 SHA-1 生成的摘要
+   key       -> 基****于 value 通过 SHA-1 生成的摘要
 
 
 ## 常用命令-------------------------------------------------------

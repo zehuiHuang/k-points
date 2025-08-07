@@ -25,7 +25,7 @@ for i:=1;i<len(weight);i++{
 
 01背包一维数组推导公式：
 ```
-dp[j]=max(dp[i],dp[j-weight[i]]+value[i])
+dp[j] = max(dp[j], dp[j - weight[i]] + value[i])
 //循环遍历：先遍历物品，在遍历容量，且容量要倒叙遍历（防止前面被重复赋值）
 for i:=0;i<len(weight);i++{
   for j:=bigBag;j>=weight[i];j--{
@@ -54,7 +54,7 @@ for i:=1;i<len(weight);i++{
 
 完全背包问题一维数组推导公式：
 ```
-dp[j]=max(dp[j],dp[j-weight[i]]+value[i])
+dp[j] = max(dp[j], dp[j - weight[i]] + value[i])
 #循环遍历：先遍历物品，在遍历容量
 for i:=0;i<len(weight);i++{
     for j:=0;j<=bigBag;j++{
@@ -126,7 +126,7 @@ for i:=0;i<len(weight);i++{
 
 
 ## 总结：
-关于01背包问题，二维数组双层遍历中的物品和容量谁都可以在外层，而一维数组双层遍历必须要求外层是物品，内存是容量，且容量必须倒叙遍历
+关于01背包问题，二维数组双层遍历中的物品和容量谁都可以在外层，而一维数组双层遍历必须要求外层是物品，内层是容量，且容量必须倒叙遍历
 关于完全背包，和01背包的区别是dp[i][j-weight[i]]+value[i]（完全背包）, dp[i-1][j-weight[i]]+value[i]（01背包）
 关于组合数:
 01背包 二维数组： dp[i][j]=dp[i-1][j]+dp[i-1][j-weight[i]] ,一维数组dp[j]+=dp[j-weight[i]]

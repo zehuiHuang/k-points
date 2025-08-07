@@ -2,6 +2,7 @@ package leetcode
 
 import (
 	"fmt"
+	"math"
 	"math/rand"
 	"sort"
 )
@@ -34,29 +35,6 @@ func LongestConsecutive(nums []int) int {
 		}
 	}
 	return longestStreak
-}
-
-func LongestConsecutive2(nums []int) int {
-	numMap := map[int]bool{}
-	for _, n := range nums {
-		numMap[n] = true
-	}
-	vl := 0
-	for k := range numMap {
-		//可以作为起点
-		if !numMap[k-1] {
-			currentV := k
-			currentL := 1
-			for numMap[currentV+1] {
-				currentV++
-				currentL++
-			}
-			if vl < currentL {
-				vl = currentL
-			}
-		}
-	}
-	return vl
 }
 
 // 跳跃游戏leetcode:45
@@ -449,4 +427,41 @@ func rotate(nums []int, k int) {
 		newNums[(i+k)%len(nums)] = v
 	}
 	copy(nums, newNums)
+}
+
+func abc(nums []int) int {
+	ans := math.MinInt64
+	for i := 0; i < len(nums); i++ {
+		count := 0
+		for j := i; j < len(nums); j++ {
+			count += nums[j]
+			ans = max(ans, count)
+		}
+	}
+	return ans
+}
+
+// 连续子数组的最大和
+func maxSubArray(nums []int) int {
+	if len(nums) == 0 {
+		return 0
+	}
+	currentMax := nums[0]
+	globalMax := nums[0]
+	//-2, 11, -4, 15, -5, -2
+	for i := 1; i < len(nums); i++ {
+		// 决定是延续当前子数组还是从当前元素重新开始
+		currentMax = max(nums[i], currentMax+nums[i])
+		// 更新全局最大值
+		globalMax = max(globalMax, currentMax)
+	}
+	return globalMax
+}
+
+func reverseString(s string) string {
+	runes := []rune(s)
+	for i, j := 0, len(runes)-1; i < j; i, j = i+1, j-1 {
+		runes[i], runes[j] = runes[j], runes[i] // 交换字符位置
+	}
+	return string(runes)
 }

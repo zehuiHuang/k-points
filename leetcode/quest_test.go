@@ -7,7 +7,7 @@ import (
 
 func TestLongestConsecutive(t *testing.T) {
 	num := []int{100, 4, 200, 1, 3, 2}
-	print(LongestConsecutive2(num))
+	print(LongestConsecutive(num))
 }
 
 func TestJump(t *testing.T) {
@@ -54,6 +54,14 @@ func TestSubarraySum2(t *testing.T) {
 }
 
 func TestRestoreIpAddresses(t *testing.T) {
-	s := "25525511135"
-	restoreIpAddresses(s)
+	//s := "25525511135"
+	//restoreIpAddresses(s)
+}
+func TestBbc(t *testing.T) {
+	fmt.Println(abc([]int{-2, 11, -4, 15, -5, -2}))
+}
+
+func TestName2(t *testing.T) {
+	s := "()[]{}"
+	isValid(s)
 }

@@ -350,6 +350,22 @@ func isPalindrome(head *ListNode) bool {
 	return true
 }
 
+func isPalindrome2(head *ListNode) bool {
+	ans := []int{}
+	for ; head != nil; head = head.Next {
+		ans = append(ans, head.Val)
+	}
+	l, r := 0, len(ans)-1
+	for l < r {
+		if ans[l] != ans[r] {
+			return false
+		}
+		l++
+		r--
+	}
+	return true
+}
+
 /*
 *146. LRU 缓存
  */
@@ -440,11 +456,9 @@ func (this *LRUCache) removeTail() *DLinkedNode {
 */
 func preorderTraversal2(root *Node) []int {
 	ans := []int{}
-
 	if root == nil {
 		return ans
 	}
-
 	st := list.New()
 	st.PushBack(root)
 

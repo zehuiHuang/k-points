@@ -8,7 +8,7 @@ weight数组的大小 就是物品个数
 ```
 dp[i][j]= max(dp[i-1][j],dp[i-1][j-weight[i]]+value[i])
 # dp[i][j] 表示从0～i任意选择物品（每个物品最多选一次），那么装满容量为j的背包时的最大价值
-#循环遍历：选择先遍历物品，在遍历容量（谁先谁后都可以）
+#循环遍历：选择先遍历物品，在遍历背包容量（谁先谁后都可以）
 for i:=1;i<len(weight);i++{
   for j:=0;j <= bigBag;j++{
     if j<weight[i]{
@@ -91,7 +91,7 @@ for i:=1;i<len(weight);i++{
 dp[j] += dp[j-weight[i]]
 #循环遍历：先遍历物品，然后倒叙遍历容量
 for i:=1;i<len(weight);i++{
-    for j:=bigBag;j>=weight[i];j++{
+    for j:=bigBag;j>=weight[i];j--{
          dp[j] +=dp[j-weight[i]]
     }
 }
@@ -136,5 +136,24 @@ for i:=0;i<len(weight);i++{
 关于组合，如果不需要考虑数据的顺序，那么外层循环为物品，内层循环为背包容量。
 如果要考虑数据的顺序（比如 「1，3」和：「3，1」不同），那么要求外层为背包容量，内层为物品
 
+## 完全背包组合问题考虑顺序:
+```
+//先背包在物品
+for j:=0;j<=target;j++ {
+		for i:=0 ;i < len(nums);i++ {
+			if j >= weight[i] {
+				dp[j] += dp[j-weight[i]]
+			}
+		}
+	}
+```
 
-
+## 完全背包组合问题不考虑顺序:
+```
+//先物品在背包
+for i:=0;i<len(nums);i++{
+        for j:=nums[i];j<=target;j++{
+            dp[j]+=dp[j-nums[i]]
+        }
+    }
+```

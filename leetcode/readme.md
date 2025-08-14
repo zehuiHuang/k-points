@@ -30,7 +30,7 @@ stack:=[]int{}
 5、贪心
 
 6、动态规划
-背包问题:
+背包问题:/Users/huangzehui/learn/learn/k-points/leetcode/dynamic_programming/d.md
 
 7、单调栈:场景一般是找到右边(或左边)第一个比他大(或小)的值
 ```
@@ -52,7 +52,7 @@ stack:=[]int{}
 ```
 8、回溯:决策树、扩散问题
 ```
-void backtracking(参数) {
+void backtracking(路径，选择列表) {
     if (终止条件) {
         存放结果;
         return;
@@ -67,5 +67,23 @@ void backtracking(参数) {
 
 9、图论:
 ```
-
+unions := make([]int, m*n)
+	for i := range unions {
+		unions[i] = i
+	}
+	var find func(parent []int, x int) int
+	find = func(parent []int, x int) int {
+		if parent[x] != x {
+			parent[x] = find(parent, parent[x])
+		}
+		return parent[x]
+	}
+	var union func(parent []int, x, y int)
+	union = func(parent []int, x, y int) {
+		xx := find(parent, x)
+		yy := find(parent, y)
+		if xx != yy {
+			parent[xx] = yy
+		}
+	}
 ```

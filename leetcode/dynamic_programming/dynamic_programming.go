@@ -151,6 +151,36 @@ func canPartition(nums []int) bool {
 	return dp[target] == target
 }
 
+// 474. 一和零
+// 思路:01背包,物品的重量是由两个维度来控制的
+func findMaxForm(strs []string, m int, n int) int {
+	//dp[i][j]:背包容量为xy(x个0和y个1)最多能装多少个物品,当前物品的重量(两个维度:x个0和y个1)
+	//01背包:dp[i][j]=max(dp[i][j],dp[i-x][j-y]+1)
+	dp := make([][]int, m+1)
+	for i := range dp {
+		dp[i] = make([]int, n+1)
+	}
+	//遍历物品
+	for _, v := range strs {
+		//x表示0的个数,y表示1的个数
+		x, y := 0, 0
+		for _, ch := range v {
+			if ch == '0' {
+				x++
+			} else {
+				y++
+			}
+		}
+		//倒叙遍历背包
+		for i := m; i >= x; i-- {
+			for j := n; j >= y; j-- {
+				dp[i][j] = max(dp[i][j], dp[i-x][j-y]+1)
+			}
+		}
+	}
+	return dp[m][n]
+}
+
 /*
 01背包问题
 dp[i][j]表示 从0～i的物品任意取，放进容量为j的背包，计算它的最大价值，dp[i][j]即表示他的最大价值
@@ -210,6 +240,7 @@ func coinChange2(coins []int, amount int) int {
 	for j := 1; j <= amount; j++ {
 		dp[j] = math.MaxInt32
 	}
+
 	//[0,math.MaxInt32,math.MaxInt32,math.MaxInt32,math.MaxInt32]
 
 	//先遍历硬币，在遍历金额
@@ -423,4 +454,79 @@ func maxSubArray2(nums []int) int {
 		result = max(result, dp[i])
 	}
 	return result
+}
+
+// 最长递增子序列
+func lengthOfLIS2(nums []int) int {
+	//dp[i]:以i为结尾的最长递增子序列的长度为dp[i]
+	//递推公式:dp[i]=
+	dp := make([]int, len(nums))
+	for i := range dp {
+		dp[i] = 1
+	}
+	ans := dp[0]
+	for i := 1; i < len(nums); i++ {
+		for j := 0; j < i; j++ {
+			if nums[j] < nums[i] {
+				dp[i] = max(dp[i], dp[j]+1)
+			}
+		}
+		ans = max(ans, dp[i])
+	}
+	return ans
+}
+
+// 213. 打家劫舍 II
+func rob(nums []int) int {
+	//dp[i]=max(dp[i-2]+nums[i],dp[i-1])
+	var ff func(nums []int) int
+	ff = func(nums []int) int {
+		dp := make([]int, len(nums))
+		if len(nums) == 0 {
+			return 0
+		}
+		if len(nums) == 1 {
+			return nums[0]
+		}
+		dp[0] = nums[0]
+		dp[1] = max(nums[0], nums[1])
+		for i := 2; i < len(nums); i++ {
+			dp[i] = max(dp[i-2]+nums[i], dp[i-1])
+		}
+		return dp[len(nums)-1]
+	}
+	if len(nums) == 1 {
+		return nums[0]
+	}
+	d1 := ff(nums[1:])
+	d2 := ff(nums[:len(nums)-1])
+	return max(d1, d2)
+}
+
+type TreeNode struct {
+	Val   int
+	Left  *TreeNode
+	Right *TreeNode
+}
+
+// 337. 打家劫舍 III
+func rob3(root *TreeNode) int {
+	//思路,从底向上遍历(后序遍历:即递归),定义dfs,返回值分别表示选当前节点和不选当前节点的
+	var dfs func(root *TreeNode) (a, b int)
+
+	dfs = func(root *TreeNode) (a, b int) {
+		if root == nil {
+			return 0, 0
+		}
+		//左儿子选or不选:l1是选的值,l2是不选的值
+		l1, l2 := dfs(root.Left)
+		//右儿子选or不选:r1是选的值,r2是不选的值
+		r1, r2 := dfs(root.Right)
+		//选择当前节点:表示不选左儿子的值+不选右儿子的值
+		v1 := root.Val + l2 + r2
+		//不选当前节点
+		v2 := max(l1, l2) + max(r1, r2)
+		return v1, v2
+	}
+	return max(dfs(root))
 }

@@ -143,7 +143,7 @@ func longestOnes(nums []int, k int) int {
 	ans := 0
 	left, lsum, rsum := 0, 0, 0
 	for right, v := range nums {
-		//统计另的个数
+		//统计0的个数
 		rsum += 1 - v
 		for rsum-lsum > k {
 			lsum += 1 - nums[left]

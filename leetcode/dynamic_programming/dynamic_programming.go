@@ -530,3 +530,43 @@ func rob3(root *TreeNode) int {
 	}
 	return max(dfs(root))
 }
+
+// 718. 最长重复子数组
+func findLength(nums1 []int, nums2 []int) int {
+	ans := 0
+	//dp[i][j]表示以i-1结尾的nums1和以j-1结尾的nums2的最长重复字数组的长度为dp[i][j]
+	dp := make([][]int, len(nums1)+1)
+	for i := 0; i <= len(nums1); i++ {
+		dp[i] = make([]int, len(nums2)+1)
+	}
+	for i := 1; i <= len(nums1); i++ {
+		for j := 1; j <= len(nums2); j++ {
+			if nums1[i-1] == nums2[j-1] {
+				dp[i][j] = dp[i-1][j-1] + 1
+				ans = max(ans, dp[i][j])
+			}
+		}
+	}
+	return ans
+}
+func longestCommonSubsequence(text1 string, text2 string) int {
+	//dp[i][j]表示text1从0~i-1 余text2从0~j-1的最长公共子序列长度
+	//dp[i][j]=dp[i-1][j-1]+1  条件:(text1[i-1]==text2[j-1])
+	//dp[i][j]=max(dp[i-1][j],dp[i][j-1]
+	m := len(text1)
+	n := len(text2)
+	dp := make([][]int, m+1)
+	for i := range dp {
+		dp[i] = make([]int, n+1)
+	}
+	for i := 1; i <= m; i++ {
+		for j := 1; j <= n; j++ {
+			if text1[i-1] == text2[j-1] {
+				dp[i][j] = dp[i-1][j-1] + 1
+			} else {
+				dp[i][j] = max(dp[i-1][j], dp[i][j-1])
+			}
+		}
+	}
+	return dp[m][n]
+}

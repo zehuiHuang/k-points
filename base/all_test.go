@@ -106,6 +106,7 @@ func create() (fs [2]func()) {
 }
 func TestName666(t *testing.T) {
 	a := make([]int, 0, 10)
+	fmt.Println(a)
 	fs := create()
 	for i := 0; i < len(fs); i++ {
 		fs[i]()

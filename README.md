@@ -1,37 +1,19 @@
-# k-points
+知识点学习
+# base
+golang的基础学习和基础概念,包括 IO、方法、设计模式、函数、闭包、grpc、切片、结构体等
 
-golang资源
+# leetcode
+算法知识点的的学习
 
-调试工具 :Delve
-
-画图工具：
-https://excalidraw.com/
-
-知乎：
-https://www.zhihu.com/people/xu-xian-sheng-80-10/posts
-https://www.zhihu.com/people/xjxer/posts
+# new_coder
+算法在实际场景的案例
 
 
-面试经验：
+# git
+git相关知识点,包括数据存储、版本、分支管理等
 
-mysql：
-分页优化
+# k8s
+k8s和容器相关知识点
 
-架构：
-gateway 认证逻辑？？？，具体如何实现
-
-
-golang
-recover的源码和实现原理
-切片扩容原理
-
-java
-接口字符长度限制
-
-
-组件：
-redis：结构有哪些，选择redis的原因
-
-分布式事务：最终一致性、强一致性、rabitMQ原理
-
-管理类
+# tools
+工具使用,比如dig、反射、数据库连接、位运算实现原理、布隆过滤器等

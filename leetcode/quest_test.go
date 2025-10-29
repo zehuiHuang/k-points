@@ -60,8 +60,3 @@ func TestRestoreIpAddresses(t *testing.T) {
 func TestBbc(t *testing.T) {
 	fmt.Println(abc([]int{-2, 11, -4, 15, -5, -2}))
 }
-
-func TestName2(t *testing.T) {
-	s := "()[]{}"
-	isValid(s)
-}

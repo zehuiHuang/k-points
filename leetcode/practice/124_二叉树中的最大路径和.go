@@ -4,7 +4,7 @@ import "math"
 
 // 回溯算法
 func maxPathSum(root *TreeNode) int {
-	//定义dfs
+	//定义dfs:参数为根root,返回其 最大路径和
 	var dfs func(root *TreeNode) int
 	res := math.MinInt32
 	dfs = func(root *TreeNode) int {

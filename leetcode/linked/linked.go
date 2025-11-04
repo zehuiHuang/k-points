@@ -583,3 +583,62 @@ func isBalanced(root *Node) bool {
 	p(root)
 	return ans
 }
+
+// 86. 分隔链表
+func partition(head *ListNode, x int) *ListNode {
+	//思路:创建两个链表
+	s := &ListNode{}
+	m := &ListNode{}
+	sIndex := s
+	mIndex := m
+	for head != nil {
+		if head.Val < x {
+			sIndex.Next = head
+			sIndex = sIndex.Next
+		} else {
+			mIndex.Next = head
+			mIndex = mIndex.Next
+		}
+		head = head.Next
+	}
+	sIndex.Next = m.Next
+	//改行很重要,因为mIndex后面可能还跟着其他节点,需要清空
+	mIndex.Next = nil
+	return s.Next
+}
+
+// 237. 删除链表中的节点
+func deleteNode(node *ListNode) {
+	//3、2、4、7、9
+	//如果给的是节点2
+	node.Val = node.Next.Val   //[3 4 4 7 9]
+	node.Next = node.Next.Next //[3 4 7 9]
+
+}
+
+type Node2 struct {
+	Val    int
+	Next   *Node2
+	Random *Node2
+}
+
+// 138. 随机链表的复制
+// 思路:创建新节点是,值很好创建,难点是Next和Random之间的关系
+// 1、创建新节点,并且建立旧节点和新节点的MAP映射;2、将映射的关系赋值到新节点上
+func copyRandomList(head *Node2) *Node2 {
+	mp := make(map[*Node2]*Node2)
+	curr := head
+	for curr != nil {
+		mp[curr] = &Node2{Val: curr.Val}
+		curr = curr.Next
+	}
+	curr = head
+
+	for curr != nil {
+		//例如:获取第一个新建的Node节点,那么它的下一个节点,可以通过旧节点获取新节点
+		mp[curr].Next = mp[curr.Next]
+		mp[curr].Random = mp[curr.Random]
+		curr = curr.Next
+	}
+	return mp[head]
+}

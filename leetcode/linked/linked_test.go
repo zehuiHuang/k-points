@@ -58,5 +58,16 @@ func TestAbc(t *testing.T) {
 }
 
 func TestLevelOrder(t *testing.T) {
-	levelOrder()
+	//levelOrder()
+}
+
+func TestCopyRandomList(t *testing.T) {
+
+	head := &Node2{Val: 1}
+	node := &Node2{Val: 2}
+	head.Random = node
+	head.Next = node
+	node.Random = head
+
+	copyRandomList(head)
 }

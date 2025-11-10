@@ -1,5 +1,6 @@
 package practice
 
+// 层序遍历
 func maxDepth(root *TreeNode) int {
 	ans := 0
 	if root == nil {
@@ -22,4 +23,19 @@ func maxDepth(root *TreeNode) int {
 		}
 	}
 	return ans
+}
+
+// 递归
+// 思路,定义dfs,返回该节点的贡献(层数)
+func maxDepth2(root *TreeNode) int {
+	var dfs func(node *TreeNode) int
+	dfs = func(node *TreeNode) int {
+		if node == nil {
+			return 0
+		}
+		left := dfs(node.Left)
+		right := dfs(node.Right)
+		return max(left, right) + 1
+	}
+	return dfs(root)
 }

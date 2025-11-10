@@ -642,3 +642,16 @@ func copyRandomList(head *Node2) *Node2 {
 	}
 	return mp[head]
 }
+
+// 876. 链表的中间结点
+// 思路:中间节点这类题目,用快慢指针
+func middleNode(head *ListNode) *ListNode {
+	//快慢指针
+	fast := head
+	slow := head
+	for fast != nil && fast.Next != nil {
+		fast = fast.Next.Next
+		slow = slow.Next
+	}
+	return slow
+}

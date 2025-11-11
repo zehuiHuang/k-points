@@ -2,6 +2,7 @@ package double_pointer
 
 import (
 	"sort"
+	"strings"
 )
 
 /*
@@ -188,4 +189,36 @@ func findAnagrams(s, p string) (ans []int) {
 		}
 	}
 	return
+}
+
+// 151. 反转字符串中的单词
+func reverseWords(s string) string {
+	s = strings.TrimSpace(s)
+	if s == "" {
+		return ""
+	}
+	res := []string{}
+	i := len(s) - 1
+	//排除掉两边的空格
+	//s = strings.Trim(s, " ")
+
+	tmp := ""
+	for i >= 0 {
+		if i == 0 {
+			tmp = string(s[i]) + tmp
+			res = append(res, tmp)
+			break
+		}
+		if s[i] != ' ' {
+			tmp = string(s[i]) + tmp
+		} else {
+			if tmp != "" {
+				res = append(res, tmp)
+				tmp = ""
+			}
+			tmp = ""
+		}
+		i--
+	}
+	return strings.Join(res, " ")
 }

@@ -31,7 +31,7 @@ func restoreIpAddresses(s string) []string {
 			return
 		}
 
-		for i := 1; i <= 3 && i < len(s); i++ {
+		for i := 1; i <= 3 && i <= len(s); i++ {
 			subStr := s[:i]
 			// 前导零检查 (排除"00", "01"等)
 			if len(subStr) > 1 && subStr[0] == '0' {
@@ -67,7 +67,7 @@ func partition(s string) [][]string {
 			ans = append(ans, pathCopy)
 			return
 		}
-		for i := 1; i < len(s); i++ {
+		for i := 1; i <= len(s); i++ {
 			tmp := s[:i]
 			//判断tmp是否是回文串
 			if isPalindrome(tmp) {
@@ -168,6 +168,8 @@ func combinationSum3(k int, n int) [][]int {
 }
 
 // 77. 组合
+// n=1,2,3,4
+// k=2
 func combine(n int, k int) [][]int {
 	//结果
 	ans := [][]int{}
@@ -179,6 +181,9 @@ func combine(n int, k int) [][]int {
 			ans = append(ans, newTemps)
 			return
 		}
+		//重点理解:for循环是横向遍历,递归是纵向遍历
+		//横向遍历是为了从1开始取值,比如取1,取2
+		//纵向遍历是为了在取1的基础上,再取下一个,组合并判断是否符合条件
 		for i := startIndex; i <= n; i++ {
 			dfs(i+1, append(path, i))
 		}

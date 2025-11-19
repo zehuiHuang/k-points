@@ -2,6 +2,9 @@ package practice
 
 import "sort"
 
+// 思路:滑动窗口,找到其中一个值作为target,然后从左右两边判定,根据大小情况进行左滑动或右滑动
+// 重点:注意重复数,如果left为v,但其右边还有值为v的,那么需要去重(左指针向右滑动),还有right值为v,right的左边还有v值,同理
+// 第三个重复是选择的target右边有重复,则也需要去重
 func threeSum(nums []int) [][]int {
 	//排序
 	sort.Ints(nums)

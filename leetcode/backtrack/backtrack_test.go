@@ -15,3 +15,6 @@ func TestName(t *testing.T) {
 	str := strings.Join(path, ".")
 	fmt.Println(str)
 }
+func TestCombine(t *testing.T) {
+	combine(4, 2)
+}

@@ -8,7 +8,7 @@ func lengthOfLongestSubstring(s string) int {
 	for right := 0; right < len(s); right++ {
 		//判断当前字符串是否在occ中
 		for occ[rune(s[right])] {
-			//循环删除的目的是为了将left的位置移动到第一次出现重复字符的下一个位置，例如abcb，left需要移动到下标为1的b字节的下一个位置（即c）
+			//循环删除的目的是为了将left的位置移动到第一次出现重复字符的下一个位置，例如abcb，left需要移动到下标为1的b字符的下一个位置（即c）
 			//若在，则删除该字符，并且左边界向右滑动一个位置
 			delete(occ, rune(s[left]))
 			left++

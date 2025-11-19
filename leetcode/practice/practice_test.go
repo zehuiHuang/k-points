@@ -3,6 +3,7 @@ package practice
 import (
 	"fmt"
 	"testing"
+	"time"
 )
 
 func TestDecodeString(t *testing.T) {
@@ -15,4 +16,8 @@ func TestDecodeString(t *testing.T) {
 func TestSetZeroes(t *testing.T) {
 	matrix := [][]int{{1, 1, 1}, {1, 0, 1}, {1, 1, 1}}
 	setZeroes(matrix)
+}
+
+func TestName(t *testing.T) {
+	fmt.Println(time.Now().Unix())
 }

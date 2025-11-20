@@ -192,6 +192,11 @@ func findAnagrams(s, p string) (ans []int) {
 }
 
 // 151. 反转字符串中的单词
+/**
+思路:
+1、将指针放到末尾,然后向左滑动,只要不等于' '就累计凭借单词, 如果字符等于' ',则需要将拼接的单词放入集合,
+2、当i=0时,将最后一个拼接的单词放入集合即可
+*/
 func reverseWords(s string) string {
 	s = strings.TrimSpace(s)
 	if s == "" {

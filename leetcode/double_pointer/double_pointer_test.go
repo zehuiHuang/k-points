@@ -12,8 +12,8 @@ func TestAbc(t *testing.T) {
 	for i := 0; i < len(s); i++ {
 		fmt.Printf("%c", s[i]) // 输出：Hello, ä¸–ç•Œï¼
 	}
-
-	// 正确方式：按 rune 遍历
+	println("\n")
+	// 正确方式：按 range 遍历
 	for _, r := range s {
 		fmt.Printf("%c", r) // 输出：Hello, 世界！
 	}

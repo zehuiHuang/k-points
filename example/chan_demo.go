@@ -1,6 +1,12 @@
 package example
 
-import "fmt"
+import (
+	"context"
+	"fmt"
+	"runtime/debug"
+	"sync"
+	"time"
+)
 
 /*
 *
@@ -27,4 +33,74 @@ func chanExample1() {
 
 	// 危险操作：往已经关闭的 channel 写
 	ch <- 3 // 这里会 panic
+}
+
+func chanExample12() {
+	ch1 := make(chan int)
+	go func() {
+		ch1 <- 1
+	}()
+	time.Sleep(time.Duration(2) * time.Second)
+	close(ch1)
+}
+
+func bb() {
+	ch1 := make(chan int)
+	var wg sync.WaitGroup
+	wg.Add(1)
+
+	go func() {
+		defer wg.Done()
+		ch1 <- 1
+	}()
+	<-ch1
+	wg.Wait() // 等待发送完成
+
+	close(ch1)
+}
+
+// 超时
+func chanExample2() {
+	reqResponded := make(chan bool, 1)
+	timeout := time.Duration(10) * time.Second
+	ctx := context.Background()
+	fmt.Println("111111111")
+	reqCtx := buildRetryCtx(ctx, timeout, reqResponded)
+	fmt.Println("2222222")
+	fmt.Println(reqCtx)
+	highTime()
+	fmt.Println("3333333")
+	reqResponded <- true
+	fmt.Println("4444444")
+}
+
+func highTime() {
+	time.Sleep(time.Duration(12) * time.Second)
+}
+
+func buildRetryCtx(ctx context.Context, timeout time.Duration, reqResponded chan bool) context.Context {
+	reqCtx, cancel := context.WithCancel(ctx)
+	go func() {
+		select {
+		case <-reqResponded:
+			fmt.Println("bbbbbbbb")
+			return
+		case <-time.After(timeout):
+			fmt.Println("aaaaaaaa")
+			cancel()
+			return
+		}
+	}()
+	return reqCtx
+}
+
+func SafeGo(f func()) {
+	go func() {
+		defer func() {
+			if r := recover(); r != nil {
+				fmt.Sprintf("goroutine panic: %+v, stack: %s", r, string(debug.Stack()))
+			}
+		}()
+		f()
+	}()
 }

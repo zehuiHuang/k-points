@@ -22,7 +22,7 @@ func fib(n int) int {
 70. 爬楼梯：leetcode 70
 假设你正在爬楼梯。需要 n 阶你才能到达楼顶。
 每次你可以爬 1 或 2 个台阶。你有多少种不同的方法可以爬到楼顶呢？
-思路：方程式：dp(i)表示爬到第i层楼底，有d[i]个方法
+思路：方程式：dp(i)表示爬到第i层楼梯，有d[i]个方法
 理解：
 1、假设知道了到达i-1阶为dp(i-1)中方法，那么对于dp(i-1)种方法中的每一种，我们都可以通过再跨1步到达第i阶，
 所以说从i-1阶到i阶有dp(i-1)种方法
@@ -130,6 +130,7 @@ func uniquePathsWithObstacles(obstacleGrid [][]int) int {
 
 // 416. 分割等和子集
 // 思路:01背包问题
+// dp[j]表示容量为j的背包最多能装多少物品
 func canPartition(nums []int) bool {
 	sum := 0
 	for i := range nums {

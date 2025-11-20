@@ -8,3 +8,7 @@ func TestContext1(t *testing.T) {
 func TestContext2(t *testing.T) {
 	context2()
 }
+
+func TestContextDemo1Example(t *testing.T) {
+	contextDemo1Example()
+}

@@ -92,3 +92,18 @@ func rotateString(s string, goal string) bool {
 	}
 	return false
 }
+
+// 476. 数字的补数
+func findComplement(num int) int {
+	//思路:获取num二进制对应的mark,然后对num二进制取反,并与mark取&做位运算
+	mark := 0
+	v := num
+	for v > 0 {
+		//将mark左移动一位,并在末尾换成1
+		mark = (mark << 1) | 1
+		//被处理的数右移一位,知道被减少到0为止
+		v >>= 1
+	}
+	//&mark的目的是为了移除掉高位的0
+	return ^num & mark
+}

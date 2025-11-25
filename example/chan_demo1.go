@@ -32,7 +32,10 @@ func basicSelect() {
 	ch2 := make(chan string, 1)
 	//ch := make(chan string, 1)
 
-	ch1 <- "hello"
+	//ch1 <- "hello"
+	go func() {
+		work(ch1)
+	}()
 
 	select {
 	case msg := <-ch1:
@@ -55,4 +58,9 @@ func basicSelect() {
 	//		return // 退出循环
 	//	}
 	//}
+}
+
+func work(ch1 chan string) {
+	time.Sleep(time.Duration(5) * time.Second)
+	ch1 <- "hello"
 }

@@ -11,7 +11,7 @@ func combine(n int, k int) [][]int {
 			ans = append(ans, tmp)
 			return
 		}
-		//横向遍历
+		//横向遍历,index就是为了重复,后续的递归只能选择该输的后面一个
 		for i := index; i <= n; i++ {
 			//纵向遍历,寻找符合条件的组合
 			dfs(i+1, append(path, i))

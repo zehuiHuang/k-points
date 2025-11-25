@@ -100,6 +100,10 @@ func maxProfit2(prices []int) int {
 
 // 763. 划分字母区间
 // 思路：贪心
+/**
+1、维护每个字符的右边界,并存储到map中
+2、遍历过程中,记录已出现过的字符串右边界的最大值,判定是否遍历到出现过所有字符串的最大右边界,如果遍历到了,则截取作为一条符合的字符串放入结果中
+*/
 func partitionLabels(s string) []int {
 	result := []int{}
 	mp := map[rune]int{}
@@ -109,6 +113,8 @@ func partitionLabels(s string) []int {
 	}
 	segLong := 0
 	maxRight := 0
+	//abacbd
+	//012345
 	for i, v := range s {
 		segLong++
 		maxRight = max(maxRight, mp[v])

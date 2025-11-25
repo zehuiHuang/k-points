@@ -8,25 +8,68 @@ import (
 )
 
 func main() {
-	ch := make(chan int, 1)
-	ch <- 1
-
-	//go func() {
-	//	ch <- 1
-	//}()
-	//for {
-	select {
-	case data, ok := <-ch:
-		fmt.Printf("data:%v\n", data)
-		fmt.Printf("ok:%v", ok)
-		fmt.Println("rec----")
-	default:
-		time.Sleep(1000)
-		fmt.Println("default------")
-	}
+	//ch := make(chan int, 1)
+	//ch <- 1
+	//
+	////go func() {
+	////	ch <- 1
+	////}()
+	////for {
+	//select {
+	//case data, ok := <-ch:
+	//	fmt.Printf("data:%v\n", data)
+	//	fmt.Printf("ok:%v", ok)
+	//	fmt.Println("rec----")
+	//	//default:
+	//	//	time.Sleep(1000)
+	//	//	fmt.Println("default------")
 	//}
-	time.Sleep(time.Second * 3)
-	fmt.Println("11111")
+	////}
+	//fmt.Println("aaaaa")
+	//time.Sleep(time.Second * 3)
+	//fmt.Println("11111")
+
+	//done := make(chan bool)
+	//go worker(done)
+	//
+	//select {
+	//case <-done:
+	//	fmt.Println("Work completed")
+	//}
+	//// 阻塞等待 worker 完成
+	//fmt.Println("end------")
+
+	basicSelect()
+}
+
+func worker(done chan bool) {
+	time.Sleep(5 * time.Second)
+	done <- true
+}
+
+func basicSelect() {
+	ch1 := make(chan string, 1)
+	//ch2 := make(chan string, 1)
+	//ch := make(chan string, 1)
+
+	//ch1 <- "hello"
+	go func() {
+		work(ch1)
+	}()
+
+	select {
+	case msg := <-ch1:
+		fmt.Println("Received:", msg) // 这个会被执行
+		//case ch2 <- "world":
+		//	fmt.Println("Sent to ch2")
+		//default:
+		//	fmt.Println("Default case")
+	}
+	fmt.Println("end--------")
+}
+func work(ch1 chan string) {
+	time.Sleep(time.Duration(5) * time.Second)
+	ch1 <- "hello"
 }
 
 /**

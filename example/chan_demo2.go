@@ -20,6 +20,7 @@ func producerConsumer() {
 
 	// 生产者
 	go func() {
+		defer close(jobs)
 		for i := 0; i < 10; i++ {
 			select {
 			case jobs <- i:
@@ -28,7 +29,6 @@ func producerConsumer() {
 				fmt.Println("Producer timeout")
 			}
 		}
-		close(jobs)
 	}()
 
 	// 消费者

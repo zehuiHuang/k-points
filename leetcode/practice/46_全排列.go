@@ -20,7 +20,7 @@ package practice
 
 // 思路:
 // 1、全排列时,需要维护一个used数组,代表已经用过了哪些数
-// 2、
+// 2、每次递归遍历时都是从0~n-1进行尝试,最终在符合条件的基础上收集答案
 func permute(nums []int) [][]int {
 	ans := [][]int{}
 	n := len(nums)
@@ -33,7 +33,9 @@ func permute(nums []int) [][]int {
 			ans = append(ans, path)
 			return
 		}
-		//循环递归,就是对
+		//循环递归,每次就是对从0~n-1里选择
+		//横向遍历是为了先选择其中一个
+		//纵向遍历是,前面这个基础之上在选择第二个,以此类推
 		for i := 0; i < n; i++ {
 			if used[i] == true {
 				continue

@@ -51,6 +51,7 @@ func bb() {
 
 	go func() {
 		defer wg.Done()
+		time.Sleep(time.Second * 2)
 		ch1 <- 1
 	}()
 	<-ch1

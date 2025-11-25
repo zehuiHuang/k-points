@@ -6,13 +6,15 @@ import (
 	"sort"
 )
 
-// 定义最小堆类型
+// MinHeap 定义最小堆类型
 type MinHeap []int
 
 func (h MinHeap) Len() int {
 	return len(h)
 }
 func (h MinHeap) Less(i, j int) bool {
+	//升序:小顶堆,小的在最上面
+	//1,2,3,4
 	return h[i] < h[j]
 }
 func (h MinHeap) Swap(i, j int) {
@@ -161,13 +163,18 @@ func maxSlidingWindow3(nums []int, k int) []int {
 	ans = append(ans, stack[0])
 	for i := k; i < n-1; i++ {
 		push(i)
-		if stack[0] > i-k+1 {
+		if stack[0] < i-k+1 {
 			stack = stack[1:]
 		}
 		ans = append(ans, stack[0])
 	}
 	return ans
 }
+
+// 面试题 17.14. 最小K个数
+/**
+思路：最大堆，向堆初始化数据，然后从k～n，保证堆中的梳理为k，offer一个，就弹出一个，最后堆中剩下的即为最小k个数了
+*/
 func smallestK(arr []int, k int) []int {
 	if k == 0 {
 		return nil

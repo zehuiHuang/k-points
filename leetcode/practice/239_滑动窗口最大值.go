@@ -5,7 +5,7 @@ package practice
 
 // 思路:关键点:滑动窗口范围内,如何挑选最大值问题
 
-//使用单调栈结构,单调栈(最小栈,保证栈顶是最小值,然后从栈底取最大值)
+//使用单调栈结构,单调栈(最小栈,保证栈顶是最小值,然后从栈底取最大值,左边是栈底,右边是栈顶)
 
 func maxSlidingWindow(nums []int, k int) []int {
 	ans := []int{}
@@ -28,6 +28,7 @@ func maxSlidingWindow(nums []int, k int) []int {
 		push(i)
 		//判定当前的最大值是否还在窗口内,如果不在责需要移除
 		m := stack[0]
+		//窗口每次只移动一步，最多只有一个元素可能会过期
 		if m < i-k+1 {
 			stack = stack[1:]
 		}

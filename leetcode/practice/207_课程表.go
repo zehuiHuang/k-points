@@ -23,9 +23,55 @@ package practice
 
 /*
 *
-思路:todo
+思路: 是一个判定图的算法,验证该图是否是有向无环图
+广度优选算法:
+1、将入度为0的放入队列
+2、循环队列,并仍出队列(仍时统计数量),仍出时,将改节点的下一批节点的入度都减1,减后如果为0,那么就将该节点放入队列
+3、若队列全清空了,统计的数量等于总的课程数,则说明能学完,否则不能学完
 */
 func canFinish(numCourses int, prerequisites [][]int) bool {
+	var (
+		edges  = make([][]int, numCourses) //先修课程与课程的关系
+		indeg  = make([]int, numCourses)   //每个课程的入度统计
+		result []int
+	)
+
+	for _, info := range prerequisites {
+		//定义先修课程与课程的关系
+		edges[info[1]] = append(edges[info[1]], info[0])
+		//统计课程的入度
+		indeg[info[0]]++
+	}
+
+	q := []int{}
+	//将入度为1的放入队列中
+	for i := 0; i < numCourses; i++ {
+		if indeg[i] == 0 {
+			q = append(q, i)
+		}
+	}
+
+	//循环队列
+	for len(q) > 0 {
+		u := q[0]
+		q = q[1:]
+		//收集从队列中取走的入度为零的课程
+		result = append(result, u)
+		//将入度为0的先修课程后面的课程的入都都减1
+		for _, v := range edges[u] {
+			indeg[v]--
+			//如果入度满足为0了,那么也放入队列中
+			if indeg[v] == 0 {
+				q = append(q, v)
+			}
+		}
+		//队列循环往复,直到队列内数据为空
+	}
+	//当所有数据都从队列中取出,则代表能够学完
+	return len(result) == numCourses
+}
+
+func canFinish2(numCourses int, prerequisites [][]int) bool {
 	var (
 		//是一个二维数组,第一维表示必须完成的,第二维表示完成一维度后可以完成的
 		edges = make([][]int, numCourses)

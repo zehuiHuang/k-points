@@ -157,3 +157,43 @@ for i:=0;i<len(nums);i++{
         }
     }
 ```
+
+
+
+
+## 规律
+动态规划 组合数
+# 1、从不重复且可重复选的集合中选择等于目标值的组合数
+```
+不重复说明不需要特殊处理,可重复选,说明index的下一个迭代不需要+1
+模版如下:
+var dfs func(sum, index int, path []int)
+dfs = func(sum, index int, path []int) {
+      //条件判定,并收集结果,并return
+      if 条件{
+      
+      }
+      for i~n{
+      //裁剪
+      }
+  }
+	
+	
+```
+2、从重复且不可重复选的集合中选择等于目标值的组合数--- 不可重复选的组合数
+```
+重复说明需要特殊处理,不重复选,说明index的下一个个迭代需要+1
+var dfs func(sum, index int, path []int)
+dfs = func(sum, index int, path []int) {
+      //条件判定,并收集结果,并return
+      if 条件{
+      
+      }
+      //先排好序,对相邻选过的不要再选
+      for i~n{
+      //裁剪
+if i > index && candidates[i] == candidates[i-1] {
+                        continue
+     } }
+     ....           
+```

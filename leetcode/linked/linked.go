@@ -2,7 +2,6 @@ package linked
 
 import (
 	"container/list"
-	"math"
 )
 
 type ListNode struct {
@@ -564,24 +563,6 @@ func lowestCommonAncestor(root, p, q *Node) *Node {
 		return right
 	}
 	return nil
-}
-
-func isBalanced(root *Node) bool {
-	ans := false
-	var p func(root *Node) int
-	p = func(root *Node) int {
-		if root == nil {
-			return 0
-		}
-		left := p(root.left)
-		right := p(root.right)
-		if math.Abs(float64(left-right)) > 1 {
-			ans = true
-		}
-		return max(left, right) + 1
-	}
-	p(root)
-	return ans
 }
 
 // 86. 分隔链表

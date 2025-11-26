@@ -1,5 +1,7 @@
 package tree
 
+import "math"
+
 type TreeNode struct {
 	Val   int
 	Left  *TreeNode
@@ -48,5 +50,24 @@ func zigzagLevelOrder(root *TreeNode) [][]int {
 		}
 		ans = append(ans, tmp)
 	}
+	return ans
+}
+
+// 110. 平衡二叉树
+func isBalanced(root *TreeNode) bool {
+	ans := false
+	var p func(root *TreeNode) int
+	p = func(root *TreeNode) int {
+		if root == nil {
+			return 0
+		}
+		left := p(root.Left)
+		right := p(root.Right)
+		if math.Abs(float64(left-right)) > 1 {
+			ans = true
+		}
+		return max(left, right) + 1
+	}
+	p(root)
 	return ans
 }

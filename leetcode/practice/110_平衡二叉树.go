@@ -10,19 +10,20 @@ import "math"
 思路:递归,从底层开始计算左右子树的深度,若发现左右子树高度大于1,则说明不是二叉树
 */
 func isBalanced(root *TreeNode) bool {
-	ans := false
-	var p func(root *TreeNode) int
-	p = func(root *TreeNode) int {
-		if root == nil {
+	ans := true
+	var f func(node *TreeNode) int
+	f = func(node *TreeNode) int {
+		if node == nil || !ans {
 			return 0
 		}
-		left := p(root.Left)
-		right := p(root.Right)
-		if math.Abs(float64(left-right)) > 1 {
-			ans = true
+		l := f(node.Left)
+		r := f(node.Right)
+		if math.Abs(float64(l-r)) > 1 {
+			ans = false
+			return 0
 		}
-		return max(left, right) + 1
+		return max(l, r) + 1
 	}
-	p(root)
+	f(root)
 	return ans
 }

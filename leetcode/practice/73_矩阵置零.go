@@ -1,5 +1,8 @@
 package practice
 
+/**
+给定一个 m x n 的矩阵，如果一个元素为 0 ，则将其所在行和列的所有元素都设为 0 。请使用 原地 算法。
+*/
 // 方法1:使用额外数组
 func setZeroes(matrix [][]int) {
 	m, n := len(matrix), len(matrix[0])

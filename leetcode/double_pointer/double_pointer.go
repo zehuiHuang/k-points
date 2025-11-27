@@ -12,16 +12,16 @@ leetcode 11. 盛最多水的容器
 */
 func maxArea(height []int) int {
 	//左右指针
-	left, right := 0, len(height)
+	left, right := 0, len(height)-1
 	maxArea := 0
 	//只要左指针小于右指针，则进行循环
 	for left < right {
-		//当前的容量
+		//当前的容量,(right - left)是他的长度
 		curArea := (right - left) * min(height[left], height[right])
 		maxArea = max(maxArea, curArea)
 		//尝试移动时，要移动较小的指针，因为较小的指针决定了当前的容量
 		if height[left] < height[right] {
-			left = left + 1
+			left++
 		} else {
 			right--
 		}

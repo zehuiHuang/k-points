@@ -5,6 +5,8 @@ import (
 	"math"
 	"math/rand"
 	"sort"
+	"strconv"
+	"strings"
 )
 
 // 100, 4, 200, 1, 3, 2
@@ -464,4 +466,21 @@ func reverseString(s string) string {
 		runes[i], runes[j] = runes[j], runes[i] // 交换字符位置
 	}
 	return string(runes)
+}
+
+func largestNumber(nums []int) string {
+	tmp := make([]string, len(nums))
+	for i := range nums {
+		tmp = append(tmp, strconv.Itoa(nums[i]))
+	}
+	sort.Slice(tmp, func(i, j int) bool {
+		v1 := tmp[i] + tmp[j]
+		v2 := tmp[j] + tmp[i]
+		return v1 > v2
+	})
+	ans := strings.Builder{}
+	for i := 0; i < len(tmp); i++ {
+		ans.WriteString(tmp[i])
+	}
+	return ans.String()
 }

@@ -17,7 +17,8 @@ import "sort"
 输入：nums = [1,2,3]
 输出：[[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]
 */
-//有问题待解决:todo
+//思路和全排列1类似,区别是全排列2有重复数,
+//判断前一个已经相等,且已经被用过了就不不选
 func permuteUnique(nums []int) [][]int {
 	sort.Slice(nums, func(i, j int) bool {
 		//升序

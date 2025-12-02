@@ -11,7 +11,7 @@ func productExceptSelf(nums []int) []int {
 		answer[i] = answer[i-1] * nums[i-1]
 	}
 	//从右边开始计算
-	//从右边开始,他的右边没值,所有=1
+	//从右边开始,他的右边没值,所以=1
 	R := 1
 	for i := n - 1; i >= 0; i-- {
 		//answer[i]=左乘积+右乘积

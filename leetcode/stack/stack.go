@@ -22,6 +22,11 @@ func dailyTemperatures(temperatures []int) []int {
 	for i := 0; i < length; i++ {
 		//获取当前遍历的值,并和栈顶的值进行对比（栈里存储的是数组下标）
 		temperature := temperatures[i]
+		/**
+		例如:4,3,2,1,5,判定4的ans,即下标为0的值
+		那么栈会放入0,1,2,3,当遍历到下标为4时,他的值大于栈顶3的元素,所以下标3的ans值为i-index,结果为1,最后从栈弹出下标为3的值
+		继续判断当前值是否大于栈顶元素,还是大于,则继续上面的逻辑
+		*/
 		for len(stack) > 0 && temperature > temperatures[stack[len(stack)-1]] {
 			//获取栈顶的数据（温度的数组下标）
 			index := stack[len(stack)-1]

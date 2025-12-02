@@ -1,4 +1,4 @@
-package practice
+package skill
 
 import "strings"
 

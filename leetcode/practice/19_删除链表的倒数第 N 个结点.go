@@ -9,7 +9,7 @@ package practice
 第三种:双指针,让双指针间隔n,当前面的指针为nil了说明后面的指针对应的节点就是要删除的节点
 */
 func removeNthFromEnd(head *ListNode, n int) *ListNode {
-	//例如:1 -> 3 -> 6 -> 4 -> 9 ; n=2
+	//例如:dummy ->  1 -> 3 -> 6 -> 4 -> 9 ; n=2
 
 	//本题选择第三种方式
 	dummy := &ListNode{0, head}
@@ -22,6 +22,6 @@ func removeNthFromEnd(head *ListNode, n int) *ListNode {
 		second = second.Next
 	}
 	//删除second.Next节点,也就是倒数第n个节点
-	second = second.Next.Next
+	second.Next = second.Next.Next
 	return dummy.Next
 }

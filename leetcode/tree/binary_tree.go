@@ -14,7 +14,7 @@ type TreeNode struct {
 45 66
 */
 // 103. 二叉树的锯齿形层序遍历
-//思路,在层序遍历的基础上,对每层的tmp数据根据奇偶进行翻转即可
+//思路,在层序遍历的基础上,对每层的t		mp数据根据奇偶进行翻转即可
 func zigzagLevelOrder(root *TreeNode) [][]int {
 	ans := [][]int{}
 	if root == nil {

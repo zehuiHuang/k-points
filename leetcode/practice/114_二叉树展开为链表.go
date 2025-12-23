@@ -26,6 +26,9 @@ func flatten(root *TreeNode) {
 		dfs(root.Right)
 	}
 	dfs(root)
+	// 1       2         3      4 5  6
+	//pre   current
+	//       pre      current
 	for i := 1; i < len(list); i++ {
 		pre, current := list[i-1], list[i]
 		pre.Left = nil

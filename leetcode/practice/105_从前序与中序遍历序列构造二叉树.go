@@ -11,14 +11,13 @@ inorder 是同一棵树的中序遍历，请构造二叉树并返回其根节点
 // 2、由此可以得到根节点、根节点的左节点,根节点的右节点
 // 3、最后在子树上重复以上操作即可
 
-// todo
 func buildTree(preorder []int, inorder []int) *TreeNode {
 	mp := make(map[int]int)
-	//中序遍历的节点值所在索引;kv value:index
+	//中序遍历的节点值所在索引位置 kv ->  value:index
 	for i := 0; i < len(inorder); i++ {
 		mp[inorder[i]] = i
 	}
-	//root:前序遍历列表的头节点
+	//root:前序遍历列表的头节点的索引位置
 	//left:中序遍历列表中的左(或右)子树位置起始位置
 	//right:中序遍历列表中的左(或右)子树位置的末尾
 	var dfs func(root, left, right int) *TreeNode
@@ -27,11 +26,12 @@ func buildTree(preorder []int, inorder []int) *TreeNode {
 		if left > right {
 			return nil
 		}
+		//从前序遍历中获取头节点
 		node := &TreeNode{
 			Val: preorder[root],
 		}
 		//中序遍历的index左边为左子树,右边为右子树,两边可以进行左右子树划分
-		index := mp[preorder[root]]
+		index := mp[preorder[root]] //头节点在中序遍历列表中的index位置
 		//开始左子树递归
 		//第一个参数为头节点下一位,也就是左子树的头节点
 		//第二个参数  left 是指中序遍历列表中的左边

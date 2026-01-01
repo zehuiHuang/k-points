@@ -8,7 +8,7 @@ func subarraySum2_(nums []int, k int) int {
 	count := 0
 	for i := 0; i < len(nums); i++ {
 		sum := 0
-		//必须倒叙,才能获取所有的情况,不缺不多
+		//必须倒叙,才能获取所有的情况,保证不会漏算多算
 		for j := i; j >= 0; j-- {
 			sum += nums[j]
 			if sum == k {

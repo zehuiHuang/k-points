@@ -2,6 +2,7 @@ package mode
 
 import (
 	"context"
+	"fmt"
 	"testing"
 )
 
@@ -35,4 +36,52 @@ func Test_RuleChainV2(t *testing.T) {
 
 	// 通过前置校验流程，进行奖励发放
 	//sendReward(ctx, params)
+}
+
+func TestWrapToolCall(t *testing.T) {
+	f := wrapToolCall(&Weather{}, []InvokableToolMiddleware{
+		func(next InvokableToolEndpoint) InvokableToolEndpoint {
+			return func(ctx context.Context, input *string) (*string, error) {
+				fmt.Println("11111111111111 - before")
+				result, err := next(ctx, input)
+				fmt.Println("11111111111111 - after")
+				return result, err
+			}
+		},
+		func(next InvokableToolEndpoint) InvokableToolEndpoint {
+			return func(ctx context.Context, input *string) (*string, error) {
+				fmt.Println("22222222222222 - before")
+				result, err := next(ctx, input)
+				fmt.Println("22222222222222 - after")
+				return result, err
+			}
+		},
+		func(next InvokableToolEndpoint) InvokableToolEndpoint {
+			return func(ctx context.Context, input *string) (*string, error) {
+				fmt.Println("33333333333333 - before")
+				result, err := next(ctx, input)
+				fmt.Println("33333333333333 - after")
+				return result, err
+			}
+		},
+	})
+
+	data := "testdata"
+	result, err := f(context.Background(), &data)
+	if err != nil {
+		t.Error(err)
+	}
+
+	fmt.Println("Result:", *result)
+	// 打印应该如下:
+	/**
+	11111111111111 - before
+	22222222222222 - before
+	33333333333333 - before
+	---------------call tool---------------------
+	---------------call Weather tool---------------------
+	33333333333333 - after
+	22222222222222 - after
+	11111111111111 - after
+	*/
 }

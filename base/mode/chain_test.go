@@ -3,6 +3,7 @@ package mode
 import (
 	"context"
 	"fmt"
+	"go-learn/base/mode/common"
 	"testing"
 )
 
@@ -39,8 +40,8 @@ func Test_RuleChainV2(t *testing.T) {
 }
 
 func TestWrapToolCall(t *testing.T) {
-	f := wrapToolCall(&Weather{}, []InvokableToolMiddleware{
-		func(next InvokableToolEndpoint) InvokableToolEndpoint {
+	f := wrapToolCall(&Weather{}, []common.InvokableToolMiddleware{
+		func(next common.InvokableToolEndpoint) common.InvokableToolEndpoint {
 			return func(ctx context.Context, input *string) (*string, error) {
 				fmt.Println("11111111111111 - before")
 				result, err := next(ctx, input)
@@ -48,7 +49,7 @@ func TestWrapToolCall(t *testing.T) {
 				return result, err
 			}
 		},
-		func(next InvokableToolEndpoint) InvokableToolEndpoint {
+		func(next common.InvokableToolEndpoint) common.InvokableToolEndpoint {
 			return func(ctx context.Context, input *string) (*string, error) {
 				fmt.Println("22222222222222 - before")
 				result, err := next(ctx, input)
@@ -56,7 +57,7 @@ func TestWrapToolCall(t *testing.T) {
 				return result, err
 			}
 		},
-		func(next InvokableToolEndpoint) InvokableToolEndpoint {
+		func(next common.InvokableToolEndpoint) common.InvokableToolEndpoint {
 			return func(ctx context.Context, input *string) (*string, error) {
 				fmt.Println("33333333333333 - before")
 				result, err := next(ctx, input)

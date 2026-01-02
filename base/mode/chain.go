@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"go-learn/base/mode/common"
 )
 
 type Weather struct {
@@ -11,25 +12,15 @@ type Weather struct {
 	Humidity    float64 `json:"humidity"`
 }
 
-func (w Weather) InvokableRun(ctx context.Context, argumentsInJSON string) (string, error) {
+func (w Weather) InvokableRun(ctx context.Context, argumentsInJSON string, opts ...common.Option2) (string, error) {
 	fmt.Println("---------------call Weather tool---------------------")
 	return "{\"temperature\": 25.0, \"humidity\": 60.0}", nil
 }
 
-type InvokableTool interface {
-	InvokableRun(ctx context.Context, argumentsInJSON string) (string, error)
-}
-
-// InvokableToolEndpoint 定义 函数类型
-type InvokableToolEndpoint func(ctx context.Context, input *string) (*string, error)
-
-// InvokableToolMiddleware 定义函数类型
-type InvokableToolMiddleware func(InvokableToolEndpoint) InvokableToolEndpoint
-
 // 通过包装进行链式调用,对实现了InvokableTool接口的方法进行包装
-// 包装函数是一个链式结构调用:middleware1 -> middleware2 ->middleware3
-func wrapToolCall(it InvokableTool, middlewares []InvokableToolMiddleware) InvokableToolEndpoint {
-	middleware := func(next InvokableToolEndpoint) InvokableToolEndpoint {
+// 包装函数是一个链式结构调用:middleware1 pre  -> middleware2 pre  ->middleware3 pre -> it -> middleware3 after  -> middleware2 after  ->middleware1 after
+func wrapToolCall(it common.InvokableTool, middlewares []common.InvokableToolMiddleware) common.InvokableToolEndpoint {
+	middleware := func(next common.InvokableToolEndpoint) common.InvokableToolEndpoint {
 		for i := len(middlewares) - 1; i >= 0; i-- {
 			next = middlewares[i](next)
 		}
@@ -38,6 +29,7 @@ func wrapToolCall(it InvokableTool, middlewares []InvokableToolMiddleware) Invok
 	return middleware(func(ctx context.Context, input *string) (*string, error) {
 		fmt.Println("---------------call tool---------------------")
 		result, err := it.InvokableRun(ctx, *input)
+		fmt.Println("---------------call tool---------------------")
 		if err != nil {
 			return nil, err
 		}

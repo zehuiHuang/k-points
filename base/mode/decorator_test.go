@@ -58,6 +58,18 @@ func TestDecorate(t *testing.T) {
 	}
 }
 
+func TestWrapToolCall2(t *testing.T) {
+	f := wrapToolCall2(&Weather2{}, nil, true)
+
+	data := "testdata"
+	result, err := f(context.Background(), &data)
+	if err != nil {
+		t.Error(err)
+	}
+
+	fmt.Println("Result:", *result)
+}
+
 // -----------------------------------------------------------------------test-------------VVVVVVVVVVVVVVVVVVVVVVVVVV待删除
 //var myInterceptor1 = func(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (resp interface{}, err error) {
 //	fmt.Printf("interceptor1 preprocess, req: %+v\n", req)

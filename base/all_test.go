@@ -112,3 +112,7 @@ func TestName666(t *testing.T) {
 		fs[i]()
 	}
 }
+
+func TestName777(t *testing.T) {
+	example()
+}

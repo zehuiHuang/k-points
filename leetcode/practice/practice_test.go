@@ -21,3 +21,7 @@ func TestSetZeroes(t *testing.T) {
 func TestName(t *testing.T) {
 	fmt.Println(time.Now().Unix())
 }
+
+func TestNext(t *testing.T) {
+	fmt.Println(next("aabaaft"))
+}

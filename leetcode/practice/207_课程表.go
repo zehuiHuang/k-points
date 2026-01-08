@@ -26,18 +26,23 @@ package practice
 思路: 是一个判定图的算法,验证该图是否是有向无环图
 广度优选算法:
 1、将入度为0的放入队列
-2、循环队列,并仍出队列(仍时统计数量),仍出时,将改节点的下一批节点的入度都减1,减后如果为0,那么就将该节点放入队列
+2、循环队列,并仍出队列(仍时统计数量),仍出时,将该节点的下一批节点的入度都减1(因为它签名的课程学完了),减后如果为0,
+那么就将该节点放入队列
 3、若队列全清空了,统计的数量等于总的课程数,则说明能学完,否则不能学完
+
+概念:一个节点都有入度和出度
+出度:是指该节点会指向多少个节点
+入度:是指有多少个节点会指向该节点
 */
 func canFinish(numCourses int, prerequisites [][]int) bool {
 	var (
 		edges  = make([][]int, numCourses) //先修课程与课程的关系
 		indeg  = make([]int, numCourses)   //每个课程的入度统计
-		result []int
+		result []int                       //最终能学习的课程数
 	)
 
 	for _, info := range prerequisites {
-		//定义先修课程与课程的关系
+		//建立先修课程与课程的映射关系(1对多)
 		edges[info[1]] = append(edges[info[1]], info[0])
 		//统计课程的入度
 		indeg[info[0]]++

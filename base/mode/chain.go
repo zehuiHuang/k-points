@@ -12,6 +12,7 @@ type Weather struct {
 	Humidity    float64 `json:"humidity"`
 }
 
+// InvokableRun 实现common.InvokableTool接口
 func (w Weather) InvokableRun(ctx context.Context, argumentsInJSON string, opts ...common.Option2) (string, error) {
 	fmt.Println("---------------call Weather tool---------------------")
 	return "{\"temperature\": 25.0, \"humidity\": 60.0}", nil
@@ -20,12 +21,14 @@ func (w Weather) InvokableRun(ctx context.Context, argumentsInJSON string, opts 
 // 通过包装进行链式调用,对实现了InvokableTool接口的方法进行包装
 // 包装函数是一个链式结构调用:middleware1 pre  -> middleware2 pre  ->middleware3 pre -> it -> middleware3 after  -> middleware2 after  ->middleware1 after
 func wrapToolCall(it common.InvokableTool, middlewares []common.InvokableToolMiddleware) common.InvokableToolEndpoint {
+	//定义一个middleware函数, 洋葱模式,多个中间件按照倒顺序赋值,执行时会按照正序执行,也是函数增强
 	middleware := func(next common.InvokableToolEndpoint) common.InvokableToolEndpoint {
 		for i := len(middlewares) - 1; i >= 0; i-- {
 			next = middlewares[i](next)
 		}
 		return next
 	}
+	//执行middleware函数, 返回一个InvokableToolEndpoint,该逻辑
 	return middleware(func(ctx context.Context, input *string) (*string, error) {
 		fmt.Println("---------------call tool---------------------")
 		result, err := it.InvokableRun(ctx, *input)

@@ -103,8 +103,30 @@ git push
 
 git 
 
+## 场景
+1、只是本地Commit,但未提交到远端,要回退到某次Commit(该Commit之前的都未push到远端),使用git reset
+执行后当与本地仓库有冲突时,如下图:
+如图:![img_1.png](img_1.png)
+手动处理即可
+```
+# 回退
+ git reset 77014a....9cfbd9c
+ 
+ # 取消,自动还原
+ git revert --abort
 
+```
 
+2、已推送到远程的Commit,若要回退到指定的Commit，优先使用git revert
+```
+# 回退到指定commit后,会创建一个新的commit,旧的commit并不会丢弃(有冲突时需要处理冲突后在提交)
+ git revert 77014a....9cfbd9c
+```
+
+3、依赖某分支上的某一个commitId创建一个分支
+```
+git checkout -b 分支名称  77014a....9cfbd9c
+```
 
 
 

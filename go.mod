@@ -11,6 +11,7 @@ require (
 	github.com/eapache/go-resiliency v1.6.0
 	github.com/gin-gonic/gin v1.9.1
 	github.com/go-sql-driver/mysql v1.7.1
+	github.com/google/wire v0.7.0
 	github.com/gorilla/websocket v1.5.1
 	github.com/grpc-ecosystem/go-grpc-middleware v1.4.0
 	github.com/hashicorp/go-retryablehttp v0.7.5

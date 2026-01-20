@@ -20,6 +20,7 @@ func TestSetZeroes(t *testing.T) {
 
 func TestName(t *testing.T) {
 	fmt.Println(time.Now().Unix())
+	fmt.Println(1 << 4)
 }
 
 func TestNext(t *testing.T) {

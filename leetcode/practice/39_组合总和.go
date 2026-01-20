@@ -53,7 +53,9 @@ func combinationSum(candidates []int, target int) [][]int {
 		//index为从哪个位置开始选择,因为选过的还可以再选(但组合不能重复),所有下一层迭代还是index,只有选择完不能再选了下层迭代才是index+1
 		for i := index; i < n; i++ {
 			if sum+candidates[i] > target {
-				continue
+				//continue
+				//因为我签名排序了,所有已经大于了说明后面的都不符合了,相当于对回溯进行了裁剪,降低时间复杂度
+				break
 			}
 			//path = append(path, candidates[i])
 			dfs(sum+candidates[i], i, append(path, candidates[i]))

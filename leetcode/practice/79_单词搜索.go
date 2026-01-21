@@ -2,7 +2,7 @@ package practice
 
 /*
 *
-思路:回溯
+思路:回溯算法
 遍历二维所有位置,然后以该位置为起点,向四周扩散,并收集结果,如果结果符合条件则直接返回即可
 */
 func exist(board [][]byte, word string) bool {
@@ -29,6 +29,7 @@ func exist(board [][]byte, word string) bool {
 		if k == len(word)-1 {
 			return true
 		}
+		//将使用过的进行标记
 		temp := board[i][j]
 		board[i][j] = '0'
 		//从四个方向进行扩撒
@@ -38,10 +39,11 @@ func exist(board [][]byte, word string) bool {
 			//终止条件
 			if dfs(board, newX, newY, k+1) {
 				//回溯,重置
-				board[i][j] = temp
+				board[i][j] = temp //已经返回了,重置不重置都可
 				return true
 			}
 		}
+		//回溯,重置
 		board[i][j] = temp
 		return false
 	}

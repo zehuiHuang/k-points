@@ -23,7 +23,7 @@ func benchmarkSyncMap() {
 		go func() {
 			defer wg.Done()
 			for j := 0; j < numOps; j++ {
-				//验证现场安全
+				//验证线程安全
 				m.Store(j, j)
 				//验证atomic的线程安全
 				atomic.AddUint64(&opsCount, 1)

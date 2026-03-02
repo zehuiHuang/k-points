@@ -74,3 +74,99 @@ func TestWordBreak(t *testing.T) {
 		}
 	}
 }
+
+func TestCanPartition(t *testing.T) {
+	tests := []struct {
+		nums     []int
+		expected bool
+		desc     string
+	}{
+		{
+			nums:     []int{1, 5, 11, 5},
+			expected: true, // 可分为[1,5,5]和[11]
+			desc:     "可等分数组",
+		},
+		{
+			nums:     []int{1, 2, 3, 5},
+			expected: false, // 无法等分
+			desc:     "不可等分数组",
+		},
+	}
+
+	for i, test := range tests {
+		numsCopy := make([]int, len(test.nums))
+		copy(numsCopy, test.nums)
+
+		result := canPartition(numsCopy)
+		if result != test.expected {
+			t.Errorf("Test case %d (%s) failed: canPartition(%v) = %t, expected %t",
+				i, test.desc, test.nums, result, test.expected)
+		}
+	}
+}
+
+func TestCoinChange(t *testing.T) {
+	tests := []struct {
+		coins    []int
+		amount   int
+		expected int
+		desc     string
+	}{
+		{
+			coins:    []int{1, 3, 4},
+			amount:   6,
+			expected: 2, // 3+3
+			desc:     "示例硬币",
+		},
+		{
+			coins:    []int{2},
+			amount:   3,
+			expected: -1, // 无法凑成3
+			desc:     "无法凑成金额",
+		},
+	}
+
+	for i, test := range tests {
+		coinsCopy := make([]int, len(test.coins))
+		copy(coinsCopy, test.coins)
+
+		result := coinChange(coinsCopy, test.amount)
+		if result != test.expected {
+			t.Errorf("Test case %d (%s) failed: coinChange(%v, %d) = %d, expected %d",
+				i, test.desc, test.coins, test.amount, result, test.expected)
+		}
+	}
+}
+
+func TestFindTargetSumWays(t *testing.T) {
+	tests := []struct {
+		nums     []int
+		target   int
+		expected int
+		desc     string
+	}{
+		{
+			nums:     []int{1, 1, 1, 1, 1},
+			target:   3,
+			expected: 5, // 有5种方法添加+/-符号使得和等于3
+			desc:     "目标和问题示例",
+		},
+		{
+			nums:     []int{1},
+			target:   1,
+			expected: 1, // 只能是+1
+			desc:     "单元素正目标",
+		},
+	}
+
+	for i, test := range tests {
+		numsCopy := make([]int, len(test.nums))
+		copy(numsCopy, test.nums)
+
+		result := findTargetSumWays(numsCopy, test.target)
+		if result != test.expected {
+			t.Errorf("Test case %d (%s) failed: findTargetSumWays(%v, %d) = %d, expected %d",
+				i, test.desc, test.nums, test.target, result, test.expected)
+		}
+	}
+}

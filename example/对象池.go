@@ -34,10 +34,16 @@ func poolExample() {
 
 func b() {
 	ch1 := make(chan int)
+	done := make(chan bool)
+
 	go func() {
 		ch1 <- 1
+		done <- true
 	}()
-	close(ch1)
+
+	<-ch1      // Receive the value first
+	close(ch1) // Then close the channel
+	<-done     // Wait for goroutine to finish
 }
 
 func a() {

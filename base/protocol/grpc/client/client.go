@@ -13,7 +13,7 @@ func main() {
 	// 通过指定地址，建立与 grpc 服务端的连接
 	conn, err := grpc.Dial("localhost:8093", grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
-		fmt.Printf("error:" + err.Error())
+		fmt.Printf("error: %s", err.Error())
 		return
 	}
 	// ...

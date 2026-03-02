@@ -26,7 +26,7 @@ type ApiDispatcher struct {
 
 func (d *ApiDispatcher) Dispatch(ctx context.Context, taskInfo *Info) error {
 	taskInfo.ExecuteCount++
-	fmt.Printf("Dispatch handler productName:%s,executeCount:%s\n", taskInfo.ProductName, taskInfo.ExecuteCount)
+	fmt.Printf("Dispatch handler productName:%s,executeCount:%d\n", taskInfo.ProductName, taskInfo.ExecuteCount)
 	return nil
 }
 

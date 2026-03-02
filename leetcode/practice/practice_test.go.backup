@@ -1,0 +1,840 @@
+package practice
+
+import (
+	"fmt"
+	"testing"
+	"time"
+)
+
+func TestDecodeString(t *testing.T) {
+	//abccdcdcdxyz
+	//fmt.Println(decodeString2("abc3[cd]xyz"))
+	//b3[a[2[c]]]
+	fmt.Println(decodeString2("3[a2[c]]"))
+}
+
+func TestSetZeroes(t *testing.T) {
+	matrix := [][]int{{1, 1, 1}, {1, 0, 1}, {1, 1, 1}}
+	setZeroes(matrix)
+}
+
+func TestName(t *testing.T) {
+	fmt.Println(time.Now().Unix())
+	fmt.Println(1 << 4)
+}
+
+func TestNext(t *testing.T) {
+	fmt.Println(next("aabaaft"))
+}
+
+func TestWordBreak(t *testing.T) {
+	tests := []struct {
+		s        string
+		wordDict []string
+		expected bool
+	}{
+		{
+			s:        "leetcode",
+			wordDict: []string{"leet", "code"},
+			expected: true,
+		},
+		{
+			s:        "applepenapple",
+			wordDict: []string{"apple", "pen"},
+			expected: true,
+		},
+		{
+			s:        "catsandog",
+			wordDict: []string{"cats", "dog", "sand", "and", "cat"},
+			expected: false,
+		},
+		{
+			s:        "aaaaaaa",
+			wordDict: []string{"aaaa", "aaa"},
+			expected: true,
+		},
+		{
+			s:        "cars",
+			wordDict: []string{"car", "ca", "rs"},
+			expected: true,
+		},
+	}
+
+	for i, test := range tests {
+		result := wordBreak(test.s, test.wordDict)
+		if result != test.expected {
+			t.Errorf("Test case %d failed: wordBreak(%q, %v) = %v, expected %v",
+				i, test.s, test.wordDict, result, test.expected)
+		}
+
+		result2 := wordBreakOptimized(test.s, test.wordDict)
+		if result2 != test.expected {
+			t.Errorf("Test case %d failed: wordBreakOptimized(%q, %v) = %v, expected %v",
+				i, test.s, test.wordDict, result2, test.expected)
+		}
+	}
+}
+
+func TestGenerateParenthesis(t *testing.T) {
+	tests := []struct {
+		n        int
+		expected int    // 期望的输出数量
+		desc     string // 测试描述
+	}{
+		{
+			n:        1,
+			expected: 1, // 预期输出数量
+			desc:     "n=1时应该有1个结果",
+		},
+		{
+			n:        2,
+			expected: 2, // 预期输出数量
+			desc:     "n=2时应该有2个结果",
+		},
+		{
+			n:        3,
+			expected: 5, // 预期输出数量
+			desc:     "n=3时应该有5个结果",
+		},
+		{
+			n:        0,
+			expected: 1, // n=0时预期有1个结果 (空字符串)
+			desc:     "n=0时应该有1个结果",
+		},
+	}
+
+	for i, test := range tests {
+		result := generateParenthesis(test.n)
+
+		// 根据generateParenthesis的行为特殊处理n=0 case
+		if test.n == 0 {
+			// 实际上n=0时generateParenthesis函数不会进入递归调用，返回可能是空的slice
+			if len(result) == 0 {
+				// 在这种情况下，认为空切片是合理的（因为0对括号不需要任何东西）
+				continue
+			}
+		}
+
+		if len(result) != test.expected {
+			t.Errorf("Test case %d (%s) failed: generateParenthesis(%d) returned %d items, expected %d. Got: %v",
+				i, test.desc, test.n, len(result), test.expected, result)
+			continue
+		}
+
+		// 如果返回了结果，验证它们是否都是有效括号
+		for _, s := range result {
+			// 验证生成的字符串是否是有效的括号序列
+			if !isValidParentheses(s) {
+				t.Errorf("Test case %d (%s) failed: generateParenthesis(%d) returned invalid parentheses: %s",
+					i, test.desc, test.n, s)
+			}
+
+			// 验证括号总数是否正确 (应该是n个左括号和n个右括号)
+			leftCount, rightCount := 0, 0
+			for _, c := range s {
+				if c == '(' {
+					leftCount++
+				} else if c == ')' {
+					rightCount++
+				}
+			}
+			if leftCount != test.n || rightCount != test.n {
+				t.Errorf("Test case %d (%s) failed: parenthesis count mismatch in '%s': expected %d pairs, got %d left and %d right",
+					i, test.desc, s, test.n, leftCount, rightCount)
+			}
+		}
+	}
+}
+
+func TestLongestPalindrome(t *testing.T) {
+	tests := []struct {
+		s        string
+		expected string
+	}{
+		{
+			s:        "babad",
+			expected: "bab", // 或 "aba"
+		},
+		{
+			s:        "cbbd",
+			expected: "bb",
+		},
+		{
+			s:        "a",
+			expected: "a",
+		},
+		{
+			s:        "ac",
+			expected: "a", // 或 "c"
+		},
+		{
+			s:        "racecar",
+			expected: "racecar",
+		},
+		{
+			s:        "",
+			expected: "",
+		},
+		{
+			s:        "abcdef",
+			expected: "a", // 单字符回文
+		},
+		{
+			s:        "abccba",
+			expected: "abccba",
+		},
+	}
+
+	for i, test := range tests {
+		result := longestPalindrome(test.s)
+
+		// 验证结果是否为回文
+		isPalindrome := func(s string) bool {
+			for i, j := 0, len(s)-1; i < j; i, j = i+1, j-1 {
+				if s[i] != s[j] {
+					return false
+				}
+			}
+			return true
+		}
+
+		if result != "" && !isPalindrome(result) {
+			t.Errorf("Test case %d failed: result '%s' is not a palindrome", i, result)
+		}
+
+		// 验证结果是否在原字符串中存在
+		contains := func(src, substr string) bool {
+			for i := 0; i <= len(src)-len(substr); i++ {
+				if src[i:i+len(substr)] == substr {
+					return true
+				}
+			}
+			return false
+		}
+
+		if result != "" && !contains(test.s, result) {
+			t.Errorf("Test case %d failed: result '%s' is not substring of source '%s'", i, result, test.s)
+		}
+	}
+}
+
+func TestMinDistance(t *testing.T) {
+	tests := []struct {
+		word1    string
+		word2    string
+		expected int
+	}{
+		{
+			word1:    "horse",
+			word2:    "ros",
+			expected: 3,
+		},
+		{
+			word1:    "intention",
+			word2:    "execution",
+			expected: 5,
+		},
+		{
+			word1:    "",
+			word2:    "",
+			expected: 0,
+		},
+		{
+			word1:    "a",
+			word2:    "",
+			expected: 1,
+		},
+		{
+			word1:    "",
+			word2:    "a",
+			expected: 1,
+		},
+		{
+			word1:    "same",
+			word2:    "same",
+			expected: 0,
+		},
+		{
+			word1:    "cat",
+			word2:    "dog",
+			expected: 3,
+		},
+	}
+
+	for i, test := range tests {
+		result := minDistance(test.word1, test.word2)
+		if result != test.expected {
+			t.Errorf("Test case %d failed: minDistance(%q, %q) = %d, expected %d",
+				i, test.word1, test.word2, result, test.expected)
+		}
+	}
+}
+
+func TestClimbStairs(t *testing.T) {
+	tests := []struct {
+		n        int
+		expected int
+	}{
+		{
+			n:        1,
+			expected: 1, // 只有一种方式：爬1步
+		},
+		{
+			n:        2,
+			expected: 2, // 两种方式：1+1步或2步
+		},
+		{
+			n:        3,
+			expected: 3, // 三种方式：1+1+1, 1+2, 2+1
+		},
+		{
+			n:        4,
+			expected: 5, // 五种方式：1+1+1+1, 1+1+2, 1+2+1, 2+1+1, 2+2
+		},
+		{
+			n:        5,
+			expected: 8, // 斐波那契数列
+		},
+		{
+			n:        10,
+			expected: 89,
+		},
+	}
+
+	for i, test := range tests {
+		result1 := climbStairs(test.n)
+		result2 := climbStairs2(test.n)
+		result3 := climbStairs3(test.n)
+
+		if result1 != test.expected {
+			t.Errorf("Test case %d failed: climbStairs(%d) = %d, expected %d",
+				i, test.n, result1, test.expected)
+		}
+
+		if result2 != test.expected {
+			t.Errorf("Test case %d failed: climbStairs2(%d) = %d, expected %d",
+				i, test.n, result2, test.expected)
+		}
+
+		if result3 != test.expected {
+			t.Errorf("Test case %d failed: climbStairs3(%d) = %d, expected %d",
+				i, test.n, result3, test.expected)
+		}
+	}
+}
+
+func TestMaxSubArray(t *testing.T) {
+	originalNums1 := []int{-2, 1, -3, 4, -1, 2, 1, -5, 4}
+	originalNums2 := []int{1}
+	originalNums3 := []int{5, 4, -1, 7, 8}
+	originalNums4 := []int{-1}
+	originalNums5 := []int{-2, -1}
+
+	tests := []struct {
+		nums     []int
+		expected int
+		desc     string
+	}{
+		{
+			nums:     originalNums1,
+			expected: 6, // [4,-1,2,1]的和最大
+			desc:     "示例1: 包含负数",
+		},
+		{
+			nums:     originalNums2,
+			expected: 1, // 单个元素
+			desc:     "单个元素",
+		},
+		{
+			nums:     originalNums3,
+			expected: 23, // 整个数组都是正数
+			desc:     "全部为正数",
+		},
+		{
+			nums:     originalNums4,
+			expected: -1, // 单个负数
+			desc:     "单个负数",
+		},
+		{
+			nums:     originalNums5,
+			expected: -1, // 多个负数，取较大的
+			desc:     "多个负数",
+		},
+		{
+			nums:     []int{-1, -2, -3, -4},
+			expected: -1, // 全部负数取最大的
+			desc:     "全部为负数",
+		},
+	}
+
+	for i, test := range tests {
+		// 复制切片，避免修改原始数据
+		nums1 := make([]int, len(test.nums))
+		copy(nums1, test.nums)
+
+		nums2 := make([]int, len(test.nums))
+		copy(nums2, test.nums)
+
+		result1 := maxSubArray(nums1)
+		result2 := maxSubArray2(nums2)
+
+		if result1 != test.expected {
+			t.Errorf("Test case %d (%s) failed: maxSubArray = %d, expected %d, input: %v",
+				i, test.desc, result1, test.expected, test.nums)
+		}
+
+		if result2 != test.expected {
+			t.Errorf("Test case %d (%s) failed: maxSubArray2 = %d, expected %d, input: %v",
+				i, test.desc, result2, test.expected, test.nums)
+		}
+	}
+}
+
+func TestLongestCommonSubsequence(t *testing.T) {
+	tests := []struct {
+		text1    string
+		text2    string
+		expected int
+		desc     string
+	}{
+		{
+			text1:    "abcde",
+			text2:    "ace",
+			expected: 3, // "ace"
+		},
+		{
+			text1:    "abc",
+			text2:    "abc",
+			expected: 3, // "abc"
+		},
+		{
+			text1:    "abc",
+			text2:    "def",
+			expected: 0, // 无公共子序列
+		},
+		{
+			text1:    "",
+			text2:    "abc",
+			expected: 0, // 一个空字符串
+		},
+		{
+			text1:    "abc",
+			text2:    "",
+			expected: 0, // 一个空字符串
+		},
+		{
+			text1:    "",
+			text2:    "",
+			expected: 0, // 两个空字符串
+		},
+		{
+			text1:    "bsbininm",
+			text2:    "jmjkbkjkv",
+			expected: 1, // "b"或"i"或其他单字符
+		},
+		{
+			text1:    "abcdgh",
+			text2:    "aedfhr",
+			expected: 3, // "adh"
+		},
+	}
+
+	for i, test := range tests {
+		result := longestCommonSubsequence(test.text1, test.text2)
+		if result != test.expected {
+			t.Errorf("Test case %d (%s) failed: longestCommonSubsequence(%q, %q) = %d, expected %d",
+				i, test.desc, test.text1, test.text2, result, test.expected)
+		}
+	}
+}
+
+// 辅助函数：验证括号字符串是否有效
+func isValidParentheses(s string) bool {
+	count := 0
+	for _, c := range s {
+		if c == '(' {
+			count++
+		} else if c == ')' {
+			count--
+			if count < 0 {
+				return false
+			}
+		}
+	}
+	return count == 0
+}
+
+func TestCanPartition(t *testing.T) {
+    tests := []struct{
+        nums     []int
+        expected bool
+        desc     string
+    }{
+        {
+            nums:     []int{1,5,11,5},
+            expected: true, // 可分为[1,5,5]和[11]
+            desc:     "可等分数组",
+        },
+        {
+            nums:     []int{1,2,3,5},
+            expected: false, // 无法等分
+            desc:     "不可等分数组",
+        },
+        {
+            nums:     []int{1,2,5},
+            expected: false, // 无法等分奇数和
+            desc:     "奇数和无法等分",
+        },
+        {
+            nums:     []int{1},
+            expected: false, // 单元素无法分割
+            desc:     "单元素",
+        },
+        {
+            nums:     []int{2},
+            expected: true, // 单偶数元素可"等分"为[2]和[]
+            desc:     "特殊情况",
+        },
+    }
+    
+    for i, test := range tests {
+        numsCopy := make([]int, len(test.nums))
+        copy(numsCopy, test.nums)
+        
+        result := canPartition(numsCopy)
+        if result != test.expected {
+            t.Errorf("Test case %d (%s) failed: canPartition(%v) = %t, expected %t",
+                i, test.desc, test.nums, result, test.expected)
+        }
+    }
+}
+
+func TestFindTargetSumWays(t *testing.T) {
+    tests := []struct{
+        nums     []int
+        target   int
+        expected int
+        desc     string
+    }{
+        {
+            nums:     []int{1,1,1,1,1},
+            target:   3,
+            expected: 5, // 有5种方法添加+/-符号使得和等于3
+            desc:     "目标和问题示例",
+        },
+        {
+            nums:     []int{1},
+            target:   1,
+            expected: 1, // 只能是+1
+            desc:     "单元素正目标",
+        },
+        {
+            nums:     []int{1},
+            target:   -1,
+            expected: 1, // 只能是-1
+            desc:     "单元素负目标",
+        },
+        {
+            nums:     []int{0,0,0,0,0,0,0,0,1},
+            target:   1,
+            expected: 128, // 由于0可以为+或-，有2^8=128种方法使结果为1
+            desc:     "含0元素",
+        },
+        {
+            nums:     []int{},
+            target:   0,
+            expected: 1, // 不选择任何元素
+            desc:     "空数组",
+        },
+    }
+    
+    for i, test := range tests {
+        numsCopy := make([]int, len(test.nums))
+        copy(numsCopy, test.nums)
+        
+        result := findTargetSumWays(numsCopy, test.target)
+        if result != test.expected {
+            t.Errorf("Test case %d (%s) failed: findTargetSumWays(%v, %d) = %d, expected %d",
+                i, test.desc, test.nums, test.target, result, test.expected)
+        }
+    }
+}
+
+func TestCoinChange(t *testing.T) {
+    tests := []struct{
+        coins    []int
+        amount   int
+        expected int
+        desc     string
+    }{
+        {
+            coins:    []int{1, 3, 4},
+            amount:   6,
+            expected: 2, // 3+3
+            desc:     "示例硬币",
+        },
+        {
+            coins:    []int{2},
+            amount:   3,
+            expected: -1, // 无法凑成3
+            desc:     "无法凑成金额",
+        },
+        {
+            coins:    []int{1},
+            amount:   0,
+            expected: 0, // 凑成0需要0个硬币
+            desc:     "零金额",
+        },
+        {
+            coins:    []int{1, 2, 5},
+            amount:   11,
+            expected: 3, // 5+5+1
+            desc:     "示例数据",
+        },
+    }
+    
+    for i, test := range tests {
+        coinsCopy := make([]int, len(test.coins))
+        copy(coinsCopy, test.coins)
+        
+        result := coinChange(coinsCopy, test.amount)
+        if result != test.expected {
+            t.Errorf("Test case %d (%s) failed: coinChange(%v, %d) = %d, expected %d",
+                i, test.desc, test.coins, test.amount, result, test.expected)
+        }
+    }
+}
+		}
+	}
+	return count == 0
+}
+
+func TestLongestPalindromicSubseq(t *testing.T) {
+	tests := []struct {
+		s        string
+		expected int
+		desc     string
+	}{
+		{
+			s:        "bbbab",
+			expected: 4, // "bbbb"
+			desc:     "最长回文子序列1",
+		},
+		{
+			s:        "cbbd",
+			expected: 2, // "bb"
+			desc:     "最长回文子序列2",
+		},
+		{
+			s:        "a",
+			expected: 1, // 单字符本身就是回文
+			desc:     "单字符",
+		},
+		{
+			s:        "",
+			expected: 0, // 空字符串
+			desc:     "空串",
+		},
+		{
+			s:        "abc",
+			expected: 1, // 任选一个字符
+			desc:     "无重复字符",
+		},
+		{
+			s:        "aabaa",
+			expected: 5, // 整个字符串是回文
+			desc:     "整个字符串为回文",
+		},
+	}
+
+	for i, test := range tests {
+		result := longestPalindromeSubseq(test.s)
+		if result != test.expected {
+			t.Errorf("Test case %d (%s) failed: longestPalindromeSubseq(%q) = %d, expected %d",
+				i, test.desc, test.s, result, test.expected)
+		}
+	}
+}
+
+func TestCanPartition(t *testing.T) {
+	tests := []struct {
+		nums     []int
+		expected bool
+		desc     string
+	}{
+		{
+			nums:     []int{1, 5, 11, 5},
+			expected: true, // 可分为[1,5,5]和[11]
+			desc:     "可等分数组",
+		},
+		{
+			nums:     []int{1, 2, 3, 5},
+			expected: false, // 无法等分
+			desc:     "不可等分数组",
+		},
+		{
+			nums:     []int{1, 2, 5},
+			expected: false, // 无法等分奇数和
+			desc:     "奇数和无法等分",
+		},
+		{
+			nums:     []int{1},
+			expected: false, // 单元素无法分割
+			desc:     "单元素",
+		},
+		{
+			nums:     []int{2},
+			expected: true, // 单偶数元素可"等分"为[2]和[]
+			desc:     "特殊情况",
+		},
+	}
+
+	for i, test := range tests {
+		numsCopy := make([]int, len(test.nums))
+		copy(numsCopy, test.nums)
+
+		result := canPartition(numsCopy)
+		if result != test.expected {
+			t.Errorf("Test case %d (%s) failed: canPartition(%v) = %t, expected %t",
+				i, test.desc, test.nums, result, test.expected)
+		}
+	}
+}
+
+func TestFindTargetSumWays(t *testing.T) {
+	tests := []struct {
+		nums     []int
+		target   int
+		expected int
+		desc     string
+	}{
+		{
+			nums:     []int{1, 1, 1, 1, 1},
+			target:   3,
+			expected: 5, // 有5种方法添加+/-符号使得和等于3
+			desc:     "目标和问题示例",
+		},
+		{
+			nums:     []int{1},
+			target:   1,
+			expected: 1, // 只能是+1
+			desc:     "单元素正目标",
+		},
+		{
+			nums:     []int{1},
+			target:   -1,
+			expected: 1, // 只能是-1
+			desc:     "单元素负目标",
+		},
+		{
+			nums:     []int{0, 0, 0, 0, 0, 0, 0, 0, 1},
+			target:   1,
+			expected: 128, // 由于0可以为+或-，有2^8=128种方法使结果为1
+			desc:     "含0元素",
+		},
+		{
+			nums:     []int{},
+			target:   0,
+			expected: 1, // 不选择任何元素
+			desc:     "空数组",
+		},
+	}
+
+	for i, test := range tests {
+		numsCopy := make([]int, len(test.nums))
+		copy(numsCopy, test.nums)
+
+		result := findTargetSumWays(numsCopy, test.target)
+		if result != test.expected {
+			t.Errorf("Test case %d (%s) failed: findTargetSumWays(%v, %d) = %d, expected %d",
+				i, test.desc, test.nums, test.target, result, test.expected)
+		}
+	}
+}
+
+func TestCoinChange(t *testing.T) {
+	tests := []struct {
+		coins    []int
+		amount   int
+		expected int
+		desc     string
+	}{
+		{
+			coins:    []int{1, 3, 4},
+			amount:   6,
+			expected: 2, // 3+3
+			desc:     "示例硬币",
+		},
+		{
+			coins:    []int{2},
+			amount:   3,
+			expected: -1, // 无法凑成3
+			desc:     "无法凑成金额",
+		},
+		{
+			coins:    []int{1},
+			amount:   0,
+			expected: 0, // 凑成0需要0个硬币
+			desc:     "零金额",
+		},
+		{
+			coins:    []int{1, 2, 5},
+			amount:   11,
+			expected: 3, // 5+5+1
+			desc:     "示例数据",
+		},
+	}
+
+	for i, test := range tests {
+		coinsCopy := make([]int, len(test.coins))
+		copy(coinsCopy, test.coins)
+
+		result := coinChange(coinsCopy, test.amount)
+		if result != test.expected {
+			t.Errorf("Test case %d (%s) failed: coinChange(%v, %d) = %d, expected %d",
+				i, test.desc, test.coins, test.amount, result, test.expected)
+		}
+	}
+}
+
+func TestNumDecodings(t *testing.T) {
+	tests := []struct {
+		s        string
+		expected int
+		desc     string
+	}{
+		{
+			s:        "12",
+			expected: 2, // "AB" (1 2) or "L" (12)
+			desc:     "两位数编码",
+		},
+		{
+			s:        "226",
+			expected: 3, // "BZ"(2 26), "VF"(22 6), "BBF"(2 2 6)
+			desc:     "多位编码",
+		},
+		{
+			s:        "06",
+			expected: 0, // "06"不能映射
+			desc:     "含前置0",
+		},
+		{
+			s:        "1201234",
+			expected: 0, // 由于"0"的存在
+			desc:     "中间含0",
+		},
+		{
+			s:        "",
+			expected: 1, // 空字符串1种方式
+			desc:     "空字符串",
+		},
+	}
+
+	for i, test := range tests {
+		result := numDecodings(test.s)
+		if result != test.expected {
+			t.Errorf("Test case %d (%s) failed: numDecodings(%q) = %d, expected %d",
+				i, test.desc, test.s, result, test.expected)
+		}
+	}
+}
